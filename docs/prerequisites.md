@@ -22,4 +22,4 @@
     openssl x509 -req -in ca.csr -signkey ca.key -CAcreateserial  -out ca.crt -days 1000
 ```
 
-[next: kube-apiserver setup](docs/kube-apiserver-setup.md)
+[next: kube-apiserver setup](kube-apiserver-setup.md)
