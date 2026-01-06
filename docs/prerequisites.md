@@ -43,22 +43,12 @@
    firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
 ```
 
-```
-    <table>
-      <tr>
-        <th>Service</th>
-        <th>PORT</th>
-      </tr>
-      <tr>
-        <td>etcd</td>
-        <td>2380/tcp</td>
-      </tr>
-      <tr>
-        <td>etcd</td>
-        <td>2379/tcp</td>
-      </tr>
-    </table>
-```
+<table>
+    <tr><th>First Header</th><th>Second Header</th></tr>
+    <tr><td>Content Cell</td><td>Content Cell</td></tr>
+    <tr><td>Content Cell</td><td>Content Cell</td></tr>
+</table>
+
 
 #1. etcd CA generation
 
