@@ -33,6 +33,24 @@ EOF
 
 3. Create an encryption key to be used for encryption at rest
 
+```
+ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
+
+cat > encryption-config.yaml <<EOF
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: ${ENCRYPTION_KEY}
+      - identity: {}
+EOF
+
+```
 
 4. Download kube-apiserver binary and distribute to control plane master servers
 
@@ -40,9 +58,12 @@ EOF
         wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-scheduler
 ```
 
-3. Distribute the certificates and binaries to the master servers
+3. Distribute the certificates to the master servers
 
 ```
-    cp kube-controller-manager /usr/local/bin
-    scp kube-controller-manager master-2:/usr/local/bin
+    cp kube-scheduler /usr/local/bin/
+```
+
+```
+
 ```
