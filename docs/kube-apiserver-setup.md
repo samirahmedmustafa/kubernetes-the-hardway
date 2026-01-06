@@ -52,14 +52,22 @@ EOF
 
 ```
 
-4. Download kube-apiserver binary and distribute to control plane master servers
+4. Distribute the certificates to the master servers kubernetes directory
 
 ```
-        wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-apiserver
+    mkdir -p /var/lib/kubernetes/
+    cp kube-apiserver.key kube-apiserver.crt ca.crt /var/lib/kubernetes/
+    ssh master-2 mkdir -p /var/lib/kubernetes/
+    scp kube-apiserver.key kube-apiserver.crt ca.crt master-2:/var/lib/kubernetes/
 ```
 
-3. Distribute the certificates to the master servers
+5. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
-    cp
+    wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-apiserver
+    chmod +x kube-apiserver
+    mv kube-apiserver /usr/local/bin/
+    scp /usr/local/bin/kube-apiserver master-2:/usr/local/bin/
 ```
+
+

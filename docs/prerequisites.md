@@ -33,7 +33,31 @@
 
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl
-    mv kubectl /usr/local/bin
+    chmod +x kubectl 
+    mv kubectl /usr/local/bin/
+    scp /usr/local/bin/kubectl master-2:/usr/local/bin/
+```
+- Add firewall according to the below
+
+```
+   firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
+```
+
+```
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>PORT</th>
+      </tr>
+      <tr>
+        <td>etcd</td>
+        <td>2380/tcp</td>
+      </tr>
+      <tr>
+        <td>etcd</td>
+        <td>2379/tcp</td>
+      </tr>
+    </table>
 ```
 
 #1. etcd CA generation
