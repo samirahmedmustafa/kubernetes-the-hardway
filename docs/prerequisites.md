@@ -39,8 +39,7 @@
     openssl x509 -req -in ca.csr -signkey ca.key -CAcreateserial  -out ca.crt -days 1000
 ```
 
-<<<<<<< HEAD
-[next: kube-apiserver setup](kube-apiserver-setup.md)
+
 =======
 #3. Download kubectl and distribute to all server used for administration
 
@@ -49,4 +48,5 @@
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
->>>>>>> 0a9b133 (add kube-apiserver 1)
+
+[next: kube-apiserver setup](kube-apiserver-setup.md)
