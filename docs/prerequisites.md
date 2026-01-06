@@ -23,6 +23,12 @@
 
 ```
 
+- In master-1, create the below directories to organize the files
+
+```
+    mkdir kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd
+```
+
 #1. etcd CA generation
 
 ```
