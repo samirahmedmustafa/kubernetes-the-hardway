@@ -1,26 +1,26 @@
 1. Create a configuration file with kube-apiserver alternative names
 
 ```
-    cat > openssl.cnf <<EOF
-    [req]
-    req_extensions = v3_req
-    distinguished_name = req_distinguished_name
-    [req_distinguished_name]
-    [ v3_req ]
-    basicConstraints = CA:FALSE
-    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-    subjectAltName = @alt_names
-    [alt_names]
-    DNS.1 = kubernetes
-    DNS.2 = kubernetes.default
-    DNS.3 = kubernetes.default.svc
-    DNS.4 = kubernetes.default.svc.cluster.local
-    IP.1 = 10.96.0.1
-    IP.2 = 192.168.1.50
-    IP.3 = 192.168.1.51
-    IP.4 = 192.168.1.52
-    IP.5 = 127.0.0.1
-    EOF
+cat > openssl.cnf <<EOF
+[req]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+[req_distinguished_name]
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = kubernetes
+DNS.2 = kubernetes.default
+DNS.3 = kubernetes.default.svc
+DNS.4 = kubernetes.default.svc.cluster.local
+IP.1 = 10.96.0.1
+IP.2 = 192.168.1.50
+IP.3 = 192.168.1.51
+IP.4 = 192.168.1.52
+IP.5 = 127.0.0.1
+EOF
 ```
 
 2. Generate kube-apiserver private key, certificate request and sign it with kubernetes CA
@@ -34,21 +34,21 @@
 3. Create an encryption key to be used for encryption at rest
 
 ```
-    ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
+ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 
-    cat > encryption-config.yaml <<EOF
-    kind: EncryptionConfig
-    apiVersion: v1
-    resources:
-      - resources:
-          - secrets
-        providers:
-          - aescbc:
-              keys:
-                - name: key1
-                  secret: ${ENCRYPTION_KEY}
-          - identity: {}
-    EOF
+cat > encryption-config.yaml <<EOF
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: ${ENCRYPTION_KEY}
+      - identity: {}
+EOF
 
 ```
 
@@ -56,7 +56,6 @@
 
 ```
         wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-apiserver
-
 ```
 
 3. Distribute the certificates to the master servers
