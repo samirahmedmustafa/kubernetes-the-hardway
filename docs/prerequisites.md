@@ -29,6 +29,13 @@
     mkdir kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd
 ```
 
+- Download kubectl
+
+```
+    wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl
+    mv kubectl /usr/local/bin
+```
+
 #1. etcd CA generation
 
 ```
