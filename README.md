@@ -1,4 +1,4 @@
-# kubernetes-the-hardway
+# kubernetes-the-hardway - update (v1.34.2)
 
 
 0. [Prepare the CA certificates](docs/prerequisites.md)
