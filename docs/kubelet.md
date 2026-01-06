@@ -37,7 +37,7 @@ EOF
 4. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
-        wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-controller-manager
+        wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubelet
 ```
 
 3. Distribute the certificates and binaries to the master servers
