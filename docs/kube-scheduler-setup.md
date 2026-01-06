@@ -62,6 +62,8 @@ EOF
 
 ```
     cp kube-scheduler /usr/local/bin/
+    chmod +x kube-scheduler
+    scp /usr/local/bin/kube-scheduler master-2:/usr/local/bin/
 ```
 
 ```
