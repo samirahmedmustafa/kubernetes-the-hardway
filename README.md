@@ -8,3 +8,4 @@
 6. Setup (cilium) networking
 7. Setup coredns
 8. Test the setup
+9. Credit to [MMumshad](https://github.com/ddometita/mmumshad-kubernetes-the-hard-way/tree/master)
