@@ -44,9 +44,9 @@
 ```
 
 <table>
-    <tr><th>First Header</th><th>Second Header</th></tr>
-    <tr><td>Content Cell</td><td>Content Cell</td></tr>
-    <tr><td>Content Cell</td><td>Content Cell</td></tr>
+    <tr><th>Service</th><th>PORT</th></tr>
+    <tr><td>etcd</td><td>2380/tcp</td></tr>
+    <tr><td>etcd</td><td>2379/tcp</td></tr>
 </table>
 
 
@@ -66,8 +66,6 @@
     openssl x509 -req -in ca.csr -signkey ca.key -CAcreateserial  -out ca.crt -days 1000
 ```
 
-
-=======
 #3. Download kubectl and distribute to all server used for administration
 
 ```
