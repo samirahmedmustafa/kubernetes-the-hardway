@@ -7,6 +7,9 @@
     openssl x509 -req -in kube-apiserver.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
 ```
 
+```
+    openssl verify -CAfile ${ca_crt} kube-apiserver.crt
+```
 2. Create an encryption key to be used for encryption at rest
 ``` 
     ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
