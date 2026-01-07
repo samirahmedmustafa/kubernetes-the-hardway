@@ -48,11 +48,18 @@
 
 ```
 
-- In master-1, create the below directories to organize the files
+- From master-1, create the below directories to organize the files
 
 ```
-    mkdir -p kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd /var/lib/kubernetes/
-    ssh master-2 mkdir -p kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd /var/lib/kubernetes/
+    mkdir -p /etc/etcd/ /var/lib/kubernetes/
+    ssh master-2 mkdir -p /etc/etcd/ /var/lib/kubernetes/
+```
+
+- From master-1, create the worker nodes directories
+
+```
+    ssh worker-1 mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
+    ssh worker-2 mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
 ```
 
 - Download kubectl
