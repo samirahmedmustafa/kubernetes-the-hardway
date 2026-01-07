@@ -9,8 +9,8 @@
 2. Distribute the certificates and binaries to the master servers
 
 ```
-    cp kube-scheduler.crt kube-scheduler.key ca.crt /var/lib/kubernetes/
-    scp kube-scheduler.crt kube-scheduler.key ca.crt master-2:/var/lib/kubernetes/
+    cp kube-scheduler.crt kube-scheduler.key ${ca_crt} /var/lib/kubernetes/
+    scp kube-scheduler.crt kube-scheduler.key ${ca_crt} master-2:/var/lib/kubernetes/
 ```
 
 3. Create kubeconfig configuration file and distribute it to master servers
