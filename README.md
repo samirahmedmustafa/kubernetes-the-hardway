@@ -2,7 +2,7 @@
 
 
 0. [Prerequisites](docs/prerequisites.md)
-1. [Setup etcd which is kubernetes metadata database as described post](https://github.com/samirahmedmustafa/etcd_configuration)
+1. [Setup etcd](docs/etcd-setup.md)
 2. [Setup the first admin account](docs/admin-account-setup.md)
 2. [Setup the service admin account - needed by kube-apiserver](docs/service-account-setup.md)
 3. [Setup kube-scheduler](docs/kube-scheduler-setup.md)
