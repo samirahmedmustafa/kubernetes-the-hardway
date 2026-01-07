@@ -111,7 +111,8 @@ EOF
 ```
 
 ```
-    scp /etc/systemd/system/kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
+    sed -e 's/master-1/master-2/' /etc/systemd/system/kube-apiserver.service > kube-apiserver.service
+    scp kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
 ```
 6. Download kube-apiserver binary and distribute to control plane master servers
 
