@@ -1,6 +1,11 @@
 # For the admin, the first account we will use the below procedure (execute the below inside the CA directory)
 
-1. Create and sign samir certificates
+0. Setup CA locations in environment variable
+```
+    export ca_crt=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt
+    export ca_key=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key
+```
+1. Create and sign admin certificates
 
 ```
     openssl genrsa -out admin.key 2048
