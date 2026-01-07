@@ -14,7 +14,9 @@
 - Add firewall according to the below
 
 ```
-   firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
+    for i in tcp/2380 tcp/2379; do
+        firewall-cmd --add-port=${i} && firewall-cmd --permanent --add-port=${i}
+    done
 ```
 
 <table>
