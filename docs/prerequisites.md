@@ -98,8 +98,8 @@
 #2. kubernetes CA generation
 
 ```
-    openssl genrsa -out ca.key 2048
-    openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr
+   openssl genrsa -out ca.key 2048
+   openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr
    openssl req -x509 -new -nodes -key ca.key -days 3650 -out ca.crt -subj "/CN=KUBERNETES-CA" -addext "basicConstraints=critical,CA:TRUE" -addext "keyUsage=critical,keyCertSign,cRLSign" -addext "subjectKeyIdentifier=hash"
 ```
 
