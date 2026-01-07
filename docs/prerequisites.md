@@ -2,6 +2,37 @@
 
 #0. Install openssl, tar and wget (preferrably in all servers)
 
+- Set selinux to permissive
+
+```
+    setenforce 0
+    grep ^SELINUX= /etc/selinux/config
+        
+        SELINUX=permissive
+```
+
+- Add firewall according to the below
+
+```
+   firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
+```
+
+```
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>PORT</th>
+      </tr>
+      <tr>
+        <td>etcd</td>
+        <td>2380/tcp</td>
+      </tr>
+      <tr>
+        <td>etcd</td>
+        <td>2379/tcp</td>
+      </tr>
+    </table>
+```
 - Install pkgs
 
 ```
@@ -26,7 +57,8 @@
 - In master-1, create the below directories to organize the files
 
 ```
-    mkdir kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd
+    mkdir -p kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd /var/lib/kubernetes/
+    ssh master-2 mkdir -p kube-apiserver  kube-scheduler kube-controller-manager kubernetes-CA etcd /var/lib/kubernetes/
 ```
 
 - Download kubectl
@@ -37,7 +69,6 @@
     mv kubectl /usr/local/bin/
     scp /usr/local/bin/kubectl master-2:/usr/local/bin/
 ```
-- Add firewall according to the below
 
 ```
    firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
@@ -48,7 +79,6 @@
     <tr><td>etcd</td><td>2380/tcp</td></tr>
     <tr><td>etcd</td><td>2379/tcp</td></tr>
 </table>
-
 
 #1. etcd CA generation
 
@@ -70,6 +100,9 @@
 
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl
+    chmod +x kubectl
+    mv kubectl /usr/local/bin/
+    scp /usr/local/bin/kubectl master-2:/usr/local/bin/
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
