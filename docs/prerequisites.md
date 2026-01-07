@@ -1,7 +1,7 @@
 #Create 2 certificate authorities the first is for etcd and the second is for controller plane cluster
 
 #0. Install openssl, tar and wget (preferrably in all servers)
-
+   
 - Set selinux to permissive
 
 ```
@@ -109,6 +109,14 @@
     chmod +x kubectl
     mv kubectl /usr/local/bin/
     scp /usr/local/bin/kubectl master-2:/usr/local/bin/
+```
+
+#4. export environment variable for the locations of the CA and etcd-CA (e.g. below)
+```
+    export ca_key=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key
+    export ca_crt=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt
+    export etcd_ca_key=/home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key
+    export etcd_ca_crt=/home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
