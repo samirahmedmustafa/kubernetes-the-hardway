@@ -94,6 +94,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --kubelet-client-key=/var/lib/kubernetes/kube-apiserver.key \\
   --runtime-config=api/all \\
   --service-account-issuer=https://127.0.0.1:6443 \\
+  --service-account-signing-key-file=/var/lib/kubernetes/service-account.key \\
   --service-account-key-file=/var/lib/kubernetes/service-account.crt \\
   --service-cluster-ip-range=10.96.0.0/12 \\
   --service-node-port-range=30000-32767 \\
