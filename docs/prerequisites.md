@@ -26,7 +26,11 @@
 - Install pkgs
 
 ```
-    dnf install -y openssl wget tar
+    dnf install -y -q openssl tar vim wget
+    ssh master-2 dnf install -y -q openssl tar vim wget
+    ssh worker-1 dnf install -y -q openssl tar vim wget
+    ssh worker-2 dnf install -y -q openssl tar vim wget
+    ssh lb dnf install -y -q openssl tar vim wget
 ```
 
 - (Optional) setup ssh key authenticate from master-1 to all other servers to transfer files/certs convenientely 
