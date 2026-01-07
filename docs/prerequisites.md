@@ -14,7 +14,7 @@
 - Add firewall according to the below
 
 ```
-    for i in tcp/2380 tcp/2379; do
+    for i in 2380/tcp 2379/tcp; do
         firewall-cmd --add-port=${i} && firewall-cmd --permanent --add-port=${i}
         ssh master-2 firewall-cmd --add-port=${i}
         ssh master-2 firewall-cmd --permanent --add-port=${i}
