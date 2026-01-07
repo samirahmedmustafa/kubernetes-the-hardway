@@ -4,8 +4,11 @@
     openssl genrsa -out kube-scheduler.key 2048
     openssl req -new -key kube-scheduler.key -subj "/CN=system:kube-scheduler" -out kube-scheduler.csr
     openssl x509 -req -in kube-scheduler.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial -out kube-scheduler.crt -days 1000
-``` 
-
+```
+ 
+```
+    openssl verify -CAfile ${ca_crt} kube-scheduler.crt
+```
 2. Distribute the certificates and binaries to the master servers
 
 ```
