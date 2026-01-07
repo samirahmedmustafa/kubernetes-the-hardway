@@ -110,6 +110,9 @@ WantedBy=multi-user.target
 EOF
 ```
 
+```
+    scp /etc/systemd/system/kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
+```
 6. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
