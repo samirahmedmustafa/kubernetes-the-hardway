@@ -74,4 +74,4 @@
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
 
-[next: kube-apiserver setup](kube-apiserver-setup.md)
+[next: kube-scheduler setup](kube-scheduler-setup.md)
