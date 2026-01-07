@@ -84,5 +84,7 @@ EOF
 {
   systemctl daemon-reload
   systemctl enable --now kube-scheduler
+  ssh master-2 systemctl daemon-reload
+  ssh master-2 systemctl enable --now kube-scheduler
 }
 ```
