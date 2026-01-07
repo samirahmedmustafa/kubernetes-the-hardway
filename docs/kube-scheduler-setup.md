@@ -72,10 +72,10 @@ EOF
 5. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
-    wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-controller-manager
-    chmod +x kube-controller-manager
-    mv kube-controller-manager /usr/local/bin/
-    scp /usr/local/bin/kube-controller-manager master-2:/usr/local/bin/
+    wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-scheduler
+    chmod +x kube-scheduler
+    mv kube-scheduler /usr/local/bin/
+    scp /usr/local/bin/kube-scheduler master-2:/usr/local/bin/
 ```
 
 6. Restart kube-scheduler service
