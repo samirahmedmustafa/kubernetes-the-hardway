@@ -52,12 +52,11 @@
   	  cp etcd-v3.6.7-linux-amd64/etcd* /usr/bin/
 
 	```
-- Create the systemd service files for the 2 servers as mentioned in the links [server1](SERVER1etcd.service) and [server2](SERVER2etcd.service) those files should be renamed to etcd.service in the 2 servers
+- Create the systemd service files for the 2 servers as mentioned in the links [server1](etcd1.server.service) and [server2](etcd2.server.service) those files should be renamed to etcd.service in the 2 servers
 	
 	```
-	  cp SERVER1etcd.service /etc/systemd/system/etcd.service	
-	  scp SERVER2etcd.service master-2:/etc/systemd/system/etcd.service	
-
+	  cp etcd1.server.service /etc/systemd/system/etcd.service	
+	  ssh etcd2.server.service master-2:/etc/systemd/system/etcd.service	
 	```
 
 - Start etcd services in the 2 servers
