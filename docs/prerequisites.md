@@ -25,6 +25,7 @@
     <tr><th>Service</th><th>PORT</th></tr>
     <tr><td>etcd</td><td>2380/tcp</td></tr>
     <tr><td>etcd</td><td>2379/tcp</td></tr>
+    <tr><td>controlplane</td><td>6443/tcp</td></tr>
 </table>
 
 - Install pkgs
