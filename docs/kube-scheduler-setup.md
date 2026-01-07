@@ -39,8 +39,8 @@
 ```
 
 ```
-    cp kube-controller-manager.kubeconfig /var/lib/kubernetes/
-    scp kube-controller-manager.kubeconfig master-2:/var/lib/kubernetes/
+    cp kube-scheduler.kubeconfig /var/lib/kubernetes/
+    scp kube-scheduler.kubeconfig master-2:/var/lib/kubernetes/
 ```
 
 4. Create systemd service file and distribute to master servers
