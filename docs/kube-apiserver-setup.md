@@ -93,7 +93,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --kubelet-client-certificate=/var/lib/kubernetes/kube-apiserver.crt \\
   --kubelet-client-key=/var/lib/kubernetes/kube-apiserver.key \\
   --runtime-config=api/all=true \\
-  --service-account-issuer=https://127.0.0.1:6443 \\
+  --service-account-issuer=https://192.168.1.51:6443 \\
   --service-account-signing-key-file=/var/lib/kubernetes/service-account.key \\
   --service-account-key-file=/var/lib/kubernetes/service-account.crt \\
   --service-cluster-ip-range=10.96.0.0/12 \\
