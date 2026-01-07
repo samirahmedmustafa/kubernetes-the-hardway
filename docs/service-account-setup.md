@@ -6,4 +6,4 @@
     openssl x509 -req -in service-account.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out service-account.crt -days 1000
 ```
 
-[Previous: service-account-setup.md] [Next: kube-scheduler-setup.md]
+[Previous: Setup service account](service-account-setup.md) [Next: setup kube-scheduler](kube-scheduler-setup.md)
