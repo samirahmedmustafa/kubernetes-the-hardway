@@ -10,7 +10,7 @@
 ```
     openssl genrsa -out admin.key 2048
     openssl req -new -key admin.key -subj "/CN=admin/O=system:masters" -out admin.csr
-    openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out admin.crt -days 1000
+    openssl x509 -req -in admin.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out admin.crt -days 1000
 
 ```
 
@@ -19,7 +19,7 @@
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=ca.crt \
+      --certificate-authority=${ca_crt} \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=admin.kubeconfig
@@ -87,7 +87,7 @@ EOF
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=ca.crt \
+      --certificate-authority=${ca_crt} \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=samir.kubeconfig
