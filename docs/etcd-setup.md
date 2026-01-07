@@ -56,7 +56,7 @@
 	
 	```
 	  cp etcd1.server.service /etc/systemd/system/etcd.service	
-	  ssh etcd2.server.service master-2:/etc/systemd/system/etcd.service	
+	  scp etcd2.server.service master-2:/etc/systemd/system/etcd.service	
 	```
 
 - Start etcd services in the 2 servers
