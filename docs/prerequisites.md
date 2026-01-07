@@ -27,10 +27,9 @@
 
 ```
     dnf install -y -q openssl tar vim wget
-    ssh master-2 dnf install -y -q openssl tar vim wget
-    ssh worker-1 dnf install -y -q openssl tar vim wget
-    ssh worker-2 dnf install -y -q openssl tar vim wget
-    ssh lb dnf install -y -q openssl tar vim wget
+    for i in master-2 worker-1 worker-2; do
+        ssh ${i} dnf install -y -q openssl tar vim wget
+    done
 ```
 
 - (Optional) setup ssh key authenticate from master-1 to all other servers to transfer files/certs convenientely 
@@ -58,8 +57,9 @@
 - From master-1, create the worker nodes directories
 
 ```
-    ssh worker-1 mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
-    ssh worker-2 mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
+    for i in worker-1 worker-2; do
+        ssh ${i} mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
+    done
 ```
 
 - Download kubectl
