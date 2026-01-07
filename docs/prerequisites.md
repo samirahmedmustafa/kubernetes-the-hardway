@@ -16,6 +16,7 @@
 ```
     for i in tcp/2380 tcp/2379; do
         firewall-cmd --add-port=${i} && firewall-cmd --permanent --add-port=${i}
+        ssh master-2 firewall-cmd --add-port=${i} && firewall-cmd --permanent --add-port=${i}
     done
 ```
 
