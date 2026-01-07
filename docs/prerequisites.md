@@ -113,4 +113,4 @@
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
 
-[next: Setup etcd](etcd-setup.md)
+[Next: Setup etcd](etcd-setup.md)
