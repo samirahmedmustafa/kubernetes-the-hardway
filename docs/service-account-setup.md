@@ -3,6 +3,6 @@
 ```
     openssl genrsa -out service-account.key 2048
     openssl req -new -key service-account.key -subj "/CN=service-accounts" -out service-account.csr
-    openssl x509 -req -in service-account.csr -CA ${ca_key} -CAkey ${ca_key} -CAcreateserial  -out service-account.crt -days 1000
+    openssl x509 -req -in service-account.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out service-account.crt -days 1000
 ```
 
