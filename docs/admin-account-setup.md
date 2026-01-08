@@ -114,4 +114,5 @@ EOF
     kubectl --context samir auth whoami
 ```
 
-[Previous: Setup etcd](etcd-setup.md)                                                                                                                    [Next: setup service account](service-account-setup.md)
+[Previous: Setup etcd](etcd-setup.md)       [Next: Setup the service admin account](service-account-setup.md)
+
