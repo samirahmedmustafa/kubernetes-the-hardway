@@ -3,14 +3,14 @@
 ```
     openssl genrsa -out kube-controller-manager.key 2048
     openssl req -new -key kube-controller-manager.key -subj "/CN=system:kube-controller-manager" -out kube-controller-manager.csr
-    openssl x509 -req -in kube-controller-manager.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out kube-controller-manager.crt -days 1000
+    openssl x509 -req -in kube-controller-manager.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial -out kube-controller-manager.crt -days 1000
 ``` 
 
 2. Distribute the certificates and binaries to the master servers
 
 ```
-    cp kube-controller-manager.crt kube-controller-manager.key ca.crt /var/lib/kubernetes/
-    scp kube-controller-manager.crt kube-controller-manager.key ca.crt master-2:/var/lib/kubernetes/
+    cp kube-controller-manager.crt kube-controller-manager.key ${ca_crt} /var/lib/kubernetes/
+    scp kube-controller-manager.crt kube-controller-manager.key ${ca_crt} master-2:/var/lib/kubernetes/
 ```
 
 3. Create kubeconfig configuration file and distribute it to master servers
@@ -18,7 +18,7 @@
 ```
 {
   kubectl config set-cluster home-cluster \
-    --certificate-authority=ca.crt \
+    --certificate-authority=${ca_crt} \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
     --kubeconfig=kube-controller-manager.kubeconfig
@@ -53,7 +53,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 
 [Service]
 ExecStart=/usr/local/bin/kube-controller-manager \\
-  --address=0.0.0.0 \\
+  --bind-address=0.0.0.0 \\
   --cluster-cidr=192.168.1.0/24 \\
   --cluster-name=home-cluster \\
   --cluster-signing-cert-file=/var/lib/kubernetes/ca.crt \\
@@ -84,6 +84,7 @@ EOF
     chmod +x kube-controller-manager
     mv kube-controller-manager /usr/local/bin/
     scp /usr/local/bin/kube-controller-manager master-2:/usr/local/bin/
+    ssh master-2 chmod +x /usr/local/bin/kube-controller-manager
 ```
 
 6. Start kube-controller-manager service
@@ -92,7 +93,9 @@ EOF
     {
         systemctl daemon-reload
         systemctl enable --now kube-controller-manager 
+        ssh master-2 systemctl daemon-reload
+        ssh master-2 systemctl enable --now kube-controller-manager 
     }
 ```
 
-[Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
+[Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
