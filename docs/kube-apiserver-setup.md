@@ -65,7 +65,35 @@ EOF
     scp kube-apiserver.key kube-apiserver.crt ${ca_crt} encryption-config.yaml master-2:/var/lib/kubernetes/
 ```
 
-5. Create kube-apiserver service file (in each master server)
+5. Create and authorize node addition with tokens
+
+```
+    token=$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
+    echo ${token},kubelet-bootstrap,10001,"system:bootstrappers" > /var/lib/kubernetes/bootstrap.token
+    scp /var/lib/kubernetes/bootstrap.token master-2:/var/lib/kubernetes/bootstrap.token
+```
+
+6. Authorize kubelet to create CSR
+
+```
+vim bootstrap.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+    name: create-csrs-for-bootstrapping
+subjects:
+    - kind: Group
+      name: system:bootstrappers
+      apiGroup: rbac.authorization.k8s.io
+roleRef:
+    kind: ClusterRole
+    name: system:node-bootstrapper
+    apiGroup: rbac.authorization.k8s.io
+
+```
+
+6. Create kube-apiserver service file (in each master server)
 
 ```
 cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
@@ -86,6 +114,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --bind-address=0.0.0.0 \\
   --enable-admission-plugins=NodeRestriction,ServiceAccount \\
   --enable-bootstrap-token-auth=true \\
+  --token-auth-file=/var/lib/kubernetes/bootstrap.token \\
   --etcd-cafile=/etc/etcd/etcd-ca.crt \\
   --etcd-certfile=/etc/etcd/etcd-server1.crt \\
   --etcd-keyfile=/etc/etcd/etcd-server1.key \\
@@ -117,7 +146,7 @@ EOF
     sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' /etc/systemd/system/kube-apiserver.service > kube-apiserver.service
     scp kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
 ```
-6. Download kube-apiserver binary and distribute to control plane master servers
+7. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-apiserver
@@ -126,7 +155,7 @@ EOF
     scp /usr/local/bin/kube-apiserver master-2:/usr/local/bin/
 ```
 
-7. Start kube-apiserver service
+8. Start kube-apiserver service
 
 ```
 {

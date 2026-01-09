@@ -61,6 +61,8 @@ ExecStart=/usr/local/bin/kube-controller-manager \\
   --kubeconfig=/var/lib/kubernetes/kube-controller-manager.kubeconfig \\
   --leader-elect=true \\
   --root-ca-file=/var/lib/kubernetes/ca.crt \\
+  --cluster-signing-cert-file=/var/lib/kubernetes/ca.crt \\
+  --cluster-signing-key-file=/var/lib/kubernetes/ca.key \\
   --service-account-private-key-file=/var/lib/kubernetes/service-account.key \\
   --service-cluster-ip-range=10.96.0.0/12 \\
   --use-service-account-credentials=true \\
@@ -96,6 +98,76 @@ EOF
         ssh master-2 systemctl daemon-reload
         ssh master-2 systemctl enable --now kube-controller-manager 
     }
+```
+
+7. Enable bootstrapping nodes to create CSR
+
+```
+cat > create_csrs_for_bootstrapping.yaml <<EOF
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: create-csrs-for-bootstrapping
+subjects:
+- kind: Group
+  name: system:bootstrappers
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: system:node-bootstrapper
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+```
+    kubectl apply -f create_csrs_for_bootstrapping.yaml
+```
+
+8. Approve all CSRs for the group "system:bootstrappers"
+
+```
+cat > auto_approve_csrs.yaml <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: auto-approve-csrs-for-group
+subjects:
+- kind: Group
+  name: system:bootstrappers
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: system:certificates.k8s.io:certificatesigningrequests:nodeclient
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+```
+    kubectl apply -f auto_approve_csrs.yaml
+```
+
+9. # Approve renewal CSRs for the group "system:nodes"
+
+```
+cat > auto_approve_renewals.yaml <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: auto-approve-renewals-for-nodes
+subjects:
+- kind: Group
+  name: system:nodes
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: system:certificates.k8s.io:certificatesigningrequests:selfnodeclient
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+```
+    kubectl apply -f auto_approve_renewals.yaml
 ```
 
 [Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
