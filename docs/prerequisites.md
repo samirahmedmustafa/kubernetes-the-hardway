@@ -129,9 +129,7 @@
         scp /var/lib/kubernetes/ca.crt ${i}:/var/lib/kubernetes/
     done
 
-    for i in master-1 master-2; do
-        scp /var/lib/kubernetes/ca.key /etc/etcd/etcd-ca.key /etc/etcd/etcd-ca.crt master-2:/etc/etcd/
-    done
+    scp /var/lib/kubernetes/ca.key /etc/etcd/etcd-ca.key /etc/etcd/etcd-ca.crt master-2:/etc/etcd/
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
