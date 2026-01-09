@@ -113,8 +113,8 @@ EOF
 ```
 
 ```
-    sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' /etc/systemd/system/kube-apiserver.service > kube-apiserver.service
-    scp kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
+    sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' /etc/systemd/system/kube-apiserver.service > /tmp/kube-apiserver.service
+    scp /tmp/kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
 ```
 6. Download kube-apiserver binary and distribute to control plane master servers
 
