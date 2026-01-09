@@ -90,9 +90,17 @@
 #1. etcd CA generation
 
 ```
-    openssl genrsa -out etcd-ca.key 2048
-    openssl req -new -key etcd-ca.key -subj "/CN=ETCD-CA" -out etcd-ca.csr
-    openssl x509 -req -in etcd-ca.csr -signkey etcd-ca.key -CAcreateserial  -out etcd-ca.crt -days 1000
+    openssl genrsa -out etcd-ca.key 4096
+    openssl req -x509 -new -nodes \
+      -key etcd-ca.key \
+      -sha256 \
+      -days 3650 \
+      -subj "/CN=etcd-ca" \
+      -addext "basicConstraints=critical,CA:TRUE" \
+      -addext "keyUsage=critical,keyCertSign,cRLSign" \
+      -addext "subjectKeyIdentifier=hash" \
+      -addext "authorityKeyIdentifier=keyid:always,issuer" \
+      -out etcd-ca.crt
 ```
 
 #2. kubernetes CA generation
@@ -114,10 +122,10 @@
 
 #4. export environment variable for the locations of the CA and etcd-CA (e.g. below)
 ```
-    export ca_key=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key
-    export ca_crt=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt
-    export etcd_ca_key=/home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key
-    export etcd_ca_crt=/home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt
+    mv /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt /var/lib/kubernetes/
+    scp /var/lib/kubernetes/ca.key /var/lib/kubernetes/ca.crt master-2:/var/lib/kubernetes/
+    mv /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt /etc/etcd/
+    scp /etc/etcd/etcd-ca.key /etc/etcd/etcd-ca.crt master-2:/etc/etcd/
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
