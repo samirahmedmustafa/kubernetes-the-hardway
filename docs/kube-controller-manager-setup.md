@@ -65,6 +65,7 @@ ExecStart=/usr/local/bin/kube-controller-manager \\
   --kubeconfig=/var/lib/kubernetes/kube-controller-manager.kubeconfig \\
   --leader-elect=true \\
   --root-ca-file=/var/lib/kubernetes/ca.crt \\
+  --controllers=*,tokencleaner \\
   --cluster-signing-cert-file=/var/lib/kubernetes/ca.crt \\
   --cluster-signing-key-file=/var/lib/kubernetes/ca.key \\
   --service-account-private-key-file=/var/lib/kubernetes/service-account.key \\
@@ -102,6 +103,47 @@ EOF
         ssh master-2 systemctl daemon-reload
         ssh master-2 systemctl enable --now kube-controller-manager 
     }
+```
+
+7. Bootstrap Token Secret Format
+
+```
+TOKEN_ID=$(openssl rand -hex 3)
+TOKEN_SECRET=$(openssl rand -hex 8)
+FULL_TOKEN="$TOKEN_ID.$TOKEN_SECRET"
+```
+```
+cat > bootstrap-token-${TOKEN_ID} <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  # Name MUST be of form "bootstrap-token-<token id>"
+  name: bootstrap-token-${TOKEN_ID}
+  namespace: kube-system
+
+# Type MUST be 'bootstrap.kubernetes.io/token'
+type: bootstrap.kubernetes.io/token
+stringData:
+
+  # Token ID and secret. Required.
+  token-id: ${TOKEN_ID}
+  token-secret: ${TOKEN_SECRET}
+
+  # Expiration. Optional.
+  expiration: 2037-03-10T03:22:11Z
+
+  # Allowed usages.
+  usage-bootstrap-authentication: "true"
+  usage-bootstrap-signing: "true"
+
+  # Extra groups to authenticate the token as. Must start with "system:bootstrappers:"
+  auth-extra-groups: system:bootstrappers:worker,system:bootstrappers:ingress
+EOF
+
+```
+
+```
+    kubectl apply -f bootstrap-token-${TOKEN_ID}
 ```
 
 7. Enable bootstrapping nodes to create CSR
