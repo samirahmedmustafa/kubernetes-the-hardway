@@ -122,14 +122,15 @@
 
 #4. export environment variable for the locations of the CA and etcd-CA (e.g. below)
 ```
-    mv /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt /var/lib/kubernetes/
-    mv /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt /etc/etcd/
+   mv /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt /var/lib/kubernetes/
+   mv /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt /etc/etcd/
 
-    for i in master-2 worker-1 worker-2; do
-        scp /var/lib/kubernetes/ca.crt ${i}:/var/lib/kubernetes/
-    done
+   for i in master-2 worker-1 worker-2; do
+       scp /var/lib/kubernetes/ca.crt ${i}:/var/lib/kubernetes/
+   done
 
-    scp /var/lib/kubernetes/ca.key /etc/etcd/etcd-ca.key /etc/etcd/etcd-ca.crt master-2:/etc/etcd/
+   scp /var/lib/kubernetes/ca.key master-2:/var/lib/kubernetes/
+   scp /etc/etcd/etcd-ca.key /etc/etcd/etcd-ca.crt master-2:/etc/etcd/
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
