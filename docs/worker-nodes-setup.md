@@ -39,7 +39,7 @@ current-context: bootstrap
 preferences: {}
 users:
 - name: kubelet-bootstrap
-  user:
+  user:    02b50b.05283e98dd0fd71db496ef01e8
     token: 07401b.f395accd246ae52d
 
 ```
