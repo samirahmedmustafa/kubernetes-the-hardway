@@ -54,4 +54,4 @@
 	etcdctl member list   --endpoints=https://127.0.0.1:2379   --cacert=/etc/etcd/etcd-ca.crt   --cert=/etc/etcd/etcd-server1.crt   --key=/etc/etcd/etcd-server1.key
  	```
 
-[Previous: Prerequisites](preqrequisites.md) [Next: Setup admin account](admin-account-setup.md)
+[Previous: Prerequisites](preqrequisites.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup admin account](admin-account-setup.md)
