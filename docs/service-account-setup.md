@@ -7,17 +7,11 @@
     openssl x509 -req -in service-account.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out service-account.crt -days 1000
 ```
 
-<<<<<<< HEAD
 2. Copy the certificates to the kubernetes location
 
 ```
-    cp service-account.crt service-account.key /var/lib/kubernetes/
-    scp service-account.crt service-account.key master-2:/var/lib/kubernetes/
-```
-
-```
-    cp service-account.crt service-account.key ca.crt /var/lib/kubernetes/
-    scp service-account.crt service-account.key ca.crt master-2:/var/lib/kubernetes/
+    cp service-account.crt service-account.key ${ca_crt} /var/lib/kubernetes/
+    scp service-account.crt service-account.key ${ca_crt} master-2:/var/lib/kubernetes/
 ```
 
 [Previous: Setup admin account](admin-account-setup.md)[Next: Setup kube-apiserver](kube-apiserver-setup.md)
