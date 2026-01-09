@@ -95,4 +95,4 @@ EOF
     }
 ```
 
-[Previous: Setup kube-apiserver](kube-apiserver-setup.md)[Setup kubelet and kube-proxy in worker nodes](docs/worker-nodes-setup.md)
+[Previous: Setup kube-apiserver](kube-apiserver-setup.md)[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
