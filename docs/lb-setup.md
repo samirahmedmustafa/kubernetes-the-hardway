@@ -39,5 +39,5 @@ rm -f haproxy.cfg
     ssh lb systemctl enable haproxy
 ```
 
-[Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubei-apiserver](kube-apiserver-setup.md)
+[Previous: Setup service account](service-account-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubei-apiserver](kube-apiserver-setup.md)
 

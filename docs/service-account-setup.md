@@ -17,5 +17,5 @@
     scp service-account.crt service-account.key master-2:/var/lib/kubernetes/
 ```
 
-[Previous: Setup admin account](admin-account-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup kube-apiserver](kube-apiserver-setup.md)
+[Previous: Setup admin account](admin-account-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup haproxy loadbalancer](lb-setup.md)
 

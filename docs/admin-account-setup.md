@@ -112,5 +112,5 @@ EOF
     kubectl --context samir auth whoami
 ```
 
-[Previous: Setup etcd](etcd-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup haproxy loadbalancer](lb-setup.md)
+[Previous: Setup etcd](etcd-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup service account](service-account-setup.md)
 

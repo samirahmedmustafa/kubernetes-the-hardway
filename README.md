@@ -4,7 +4,7 @@
 0.  [Prerequisites](docs/prerequisites.md)
 1.  [Setup etcd](docs/etcd-setup.md)
 2.  [Setup admin account](docs/admin-account-setup.md)
-3.  [Setup the service admin account - needed by kube-apiserver](docs/service-account-setup.md)
+3.  [Setup the service admin account](docs/service-account-setup.md)
 4.  [Setup haproxy loadbalancer](docs/lb-setup.md)
 5.  [Setup kube-apiserver](docs/kube-apiserver-setup.md)
 6.  [Setup kube-scheduler](docs/kube-scheduler-setup.md)
