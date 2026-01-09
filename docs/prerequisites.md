@@ -125,7 +125,7 @@
     mv /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key /home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt /var/lib/kubernetes/
     mv /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.key /home/ansible/kubernetes-the-hardway/etcd/etcd-CA/etcd-ca.crt /etc/etcd/
 
-    for i in master-1 master-2 worker-1 worker-2; do
+    for i in master-2 worker-1 worker-2; do
         scp /var/lib/kubernetes/ca.crt ${i}:/var/lib/kubernetes/
     done
 
