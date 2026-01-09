@@ -149,7 +149,7 @@ EOF
 7. Enable bootstrapping nodes to create CSR
 
 ```
-cat > create_csrs_for_bootstrapping.yaml <<EOF
+cat > bootstrapping_crb.yaml <<EOF
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
