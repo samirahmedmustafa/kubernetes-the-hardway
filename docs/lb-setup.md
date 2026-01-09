@@ -26,7 +26,14 @@ scp haproxy.cfg lb:/etc/haproxy/haproxy.cfg
 rm -f haproxy.cfg
 ```
 
-3. Restart haproxy services
+3. Allow 6443 port in the loadbalancer
+
+```
+ssh lb firewall-cmd --add-port=6443/tcp
+ssh lb firewall-cmd --permanent --add-port=6443/tcp
+```
+
+4. Restart haproxy services
 ```
     ssh lb systemctl restart haproxy
     ssh lb systemctl enable haproxy
