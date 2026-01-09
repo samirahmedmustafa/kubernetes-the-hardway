@@ -94,3 +94,5 @@ EOF
         systemctl enable --now kube-controller-manager 
     }
 ```
+
+[Previous: Setup kube-apiserver](kube-apiserver-setup.md)[Setup kubelet and kube-proxy in worker nodes](docs/worker-nodes-setup.md)
