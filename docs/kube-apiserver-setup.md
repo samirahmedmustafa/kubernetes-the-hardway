@@ -81,7 +81,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --audit-log-maxbackup=3 \\
   --audit-log-maxsize=100 \\
   --audit-log-path=/var/log/audit.log \\
-  --authorization-mode=Node,RBAC \\
+  --authorization-mode=Node,RBAC,Webhook \\
   --bind-address=0.0.0.0 \\
   --enable-admission-plugins=NodeRestriction,ServiceAccount \\
   --enable-bootstrap-token-auth \\
