@@ -18,7 +18,7 @@
 3. Change binaries to execution in the 2 worker nodes
 ```
     chmod +x kubectl kube-proxy kubelet
-    mv kubectl kube-proxy kubelet /usr/local/bin/
+    install kubectl kube-proxy kubelet /usr/local/bin/
     scp /usr/local/bin/kube* worker-2:/usr/local/bin/
     ssh worker-2 chmod +x /usr/local/bin/kube*
 ```
