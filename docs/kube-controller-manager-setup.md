@@ -3,14 +3,18 @@
 ```
     openssl genrsa -out kube-controller-manager.key 2048
     openssl req -new -key kube-controller-manager.key -subj "/CN=system:kube-controller-manager" -out kube-controller-manager.csr
-    openssl x509 -req -in kube-controller-manager.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial -out kube-controller-manager.crt -days 1000
+    openssl x509 -req -in kube-controller-manager.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial -out kube-controller-manager.crt -days 1000
 ``` 
+
+```
+    openssl verify -CAfile /var/lib/kubernetes/ca.crt kube-controller-manager.crt
+```
 
 2. Distribute the certificates and binaries to the master servers
 
 ```
-    cp kube-controller-manager.crt kube-controller-manager.key ${ca_crt} /var/lib/kubernetes/
-    scp kube-controller-manager.crt kube-controller-manager.key ${ca_crt} master-2:/var/lib/kubernetes/
+    cp kube-controller-manager.crt kube-controller-manager.key /var/lib/kubernetes/
+    scp kube-controller-manager.crt kube-controller-manager.key master-2:/var/lib/kubernetes/
 ```
 
 3. Create kubeconfig configuration file and distribute it to master servers
@@ -18,7 +22,7 @@
 ```
 {
   kubectl config set-cluster home-cluster \
-    --certificate-authority=${ca_crt} \
+    --certificate-authority=/var/lib/kubernetes/ca.crt \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
     --kubeconfig=kube-controller-manager.kubeconfig

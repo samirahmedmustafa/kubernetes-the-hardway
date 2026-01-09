@@ -1,25 +1,23 @@
 # For the admin, the first account we will use the below procedure (execute the below inside the CA directory)
 
-0. Setup CA locations in environment variable
-```
-    export ca_crt=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.crt
-    export ca_key=/home/ansible/kubernetes-the-hardway/kubernetes-CA/ca.key
-```
 1. Create and sign admin certificates
 
 ```
     openssl genrsa -out admin.key 2048
     openssl req -new -key admin.key -subj "/CN=admin/O=system:masters" -out admin.csr
-    openssl x509 -req -in admin.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out admin.crt -days 1000
+    openssl x509 -req -in admin.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial  -out admin.crt -days 1000
 
 ```
 
+```
+    openssl verify -CAfile /var/lib/kubernetes/ca.crt admin.crt
+```
 2.
 
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=${ca_crt} \
+      --certificate-authority=/var/lib/kubernetes/ca.crt \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=admin.kubeconfig
@@ -87,7 +85,7 @@ EOF
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=${ca_crt} \
+      --certificate-authority=/var/lib/kubernetes/ca.crt \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=samir.kubeconfig

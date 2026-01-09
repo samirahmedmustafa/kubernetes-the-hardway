@@ -4,11 +4,11 @@
 ```
     openssl genrsa -out kube-apiserver.key 2048
     openssl req -new -key kube-apiserver.key -subj "/CN=kube-apiserver" -out kube-apiserver.csr -config openssl.cnf
-    openssl x509 -req -in kube-apiserver.csr -CA ${ca_crt} -CAkey ${ca_key} -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
+    openssl x509 -req -in kube-apiserver.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
 ```
 
 ```
-    openssl verify -CAfile ${ca_crt} kube-apiserver.crt
+    openssl verify -CAfile /var/lib/kubernetes/ca.crt kube-apiserver.crt
 ```
 2. Create an encryption key to be used for encryption at rest
 ``` 
@@ -60,9 +60,8 @@ EOF
 4. Distribute the certificates to the master servers kubernetes directory
 
 ```
-    cp kube-apiserver.key kube-apiserver.crt ${ca_crt} encryption-config.yaml /var/lib/kubernetes/
-    ssh master-2 mkdir -p /var/lib/kubernetes/
-    scp kube-apiserver.key kube-apiserver.crt ${ca_crt} encryption-config.yaml master-2:/var/lib/kubernetes/
+    cp kube-apiserver.key kube-apiserver.crt encryption-config.yaml /var/lib/kubernetes/
+    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml master-2:/var/lib/kubernetes/
 ```
 
 5. Create and authorize node addition with tokens
