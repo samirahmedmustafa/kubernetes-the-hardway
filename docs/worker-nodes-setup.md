@@ -26,7 +26,7 @@
 4. Create a bootstrap kubeconfig
 
 ```
-cat > /var/lib/kubelet/bootstrap-kubeconfig <<EOF
+cat > /var/lib/kubernetes/bootstrap-kubeconfig <<EOF
 
 apiVersion: v1
 kind: Config
