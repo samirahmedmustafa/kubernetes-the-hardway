@@ -23,12 +23,13 @@ backend kubernetes-master-nodes
 EOF
 
 scp haproxy.cfg lb:/etc/haproxy/haproxy.cfg
+rm -f haproxy.cfg
 ```
 
 3. Restart haproxy services
 ```
-    systemctl restart haproxy
-    systemctl enable haproxy
+    ssh lb systemctl restart haproxy
+    ssh lb systemctl enable haproxy
 ```
 
 [Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubei-apiserver](kube-apiserver-setup.md)
