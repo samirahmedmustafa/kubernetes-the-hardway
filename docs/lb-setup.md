@@ -1,7 +1,7 @@
 1. Install haproxy
 
 ```
-    dnf install -y -q haproxy vim
+    ssh lb dnf install -y -q haproxy vim
 ```
 
 2. Configure the haproxy
