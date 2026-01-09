@@ -136,4 +136,4 @@ EOF
     ssh master-2 systemctl enable --now kube-apiserver
 }
 ```
-
+[Previous: Setup service account](service-account-setup.md)[Next: Setup kube-scheduler](kube-scheduler-setup.md)
