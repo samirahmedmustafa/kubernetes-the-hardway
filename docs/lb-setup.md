@@ -29,8 +29,8 @@ rm -f haproxy.cfg
 3. Allow 6443 port in the loadbalancer
 
 ```
-ssh lb firewall-cmd --add-port=6443/tcp
-ssh lb firewall-cmd --permanent --add-port=6443/tcp
+    ssh lb firewall-cmd --add-port=6443/tcp
+    ssh lb firewall-cmd --permanent --add-port=6443/tcp
 ```
 
 4. Restart haproxy services
