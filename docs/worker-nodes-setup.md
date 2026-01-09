@@ -26,7 +26,7 @@
 4. Create a bootstrap kubeconfig
 
 ```
-vim /var/lib/kubelet/bootstrap-kubeconfig
+cat > /var/lib/kubelet/bootstrap-kubeconfig <<EOF
 
 apiVersion: v1
 kind: Config
@@ -46,7 +46,7 @@ users:
 - name: kubelet-bootstrap
   user:    02b50b.05283e98dd0fd71db496ef01e8
     token: 07401b.f395accd246ae52d
-
+EOF
 ```
 
 5. Download and deploy CNI
