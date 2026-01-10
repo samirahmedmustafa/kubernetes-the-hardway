@@ -85,6 +85,7 @@
     <tr><th>Service</th><th>PORT</th></tr>
     <tr><td>etcd</td><td>2380/tcp</td></tr>
     <tr><td>etcd</td><td>2379/tcp</td></tr>
+    <tr><td>hubble-relay</td><td>10250/tcp</td></tr>
 </table>
 
 #1. etcd CA generation
