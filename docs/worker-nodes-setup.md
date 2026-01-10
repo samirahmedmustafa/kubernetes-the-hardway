@@ -79,7 +79,6 @@ ExecStart=/usr/local/bin/kubelet \\
   --config=/var/lib/kubernetes/config.yaml \\
   --rotate-certificates=true \\
   --rotate-server-certificates=true \\
-  --network-plugin=cni \\
   --register-node=true \\
   --v=2
 Restart=on-failure
