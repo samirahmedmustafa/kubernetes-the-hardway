@@ -48,7 +48,7 @@ EOF
 
 ```
     for i in worker-1 worker-2; do
-        scp /var/lib/kubernetes/config.yaml ${i}:/var/lib/kubernetes/
+        scp config.yaml ${i}:/var/lib/kubernetes/
     done
 ```
 5. Create kubelet systemd service file
