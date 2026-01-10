@@ -160,4 +160,4 @@ EOF
        ssh worker-2 systemctl daemon-reload
        ssh worker-2 systemctl enable --now kubelet
 ```
-
+[Setup kube-controller-manager](docs/kube-controller-manager-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup (cilium) networking](docs/networking-setup.md)
