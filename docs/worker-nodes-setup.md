@@ -26,7 +26,7 @@
 4. Create kubelet config.yaml
 
 ```
-cat > /var/lib/kubernetes/kubelet-config.yaml <<EOF
+cat > /var/lib/kubernetes/config.yaml <<EOF
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 authentication:
@@ -46,6 +46,11 @@ runtimeRequestTimeout: "15m"
 EOF
 ```
 
+```
+    for i in worker-1 worker-2; do
+        scp /var/lib/kubernetes/config.yaml ${i}:/var/lib/kubernetes/
+    done
+```
 5. Create kubelet systemd service file
 
 ```
