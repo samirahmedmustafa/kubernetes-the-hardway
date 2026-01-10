@@ -10,7 +10,7 @@
 6.  [Setup kube-scheduler](docs/kube-scheduler-setup.md)
 7.  [Setup kube-controller-manager](docs/kube-controller-manager-setup.md)
 8.  [Setup kubelet and kube-proxy in worker nodes](docs/worker-nodes-setup.md)
-9.  [Setup (cilium) networking](docs/cilium-setup.md)
+9.  [Setup (cilium) networking](docs/networking-setup.md)
 10. [Setup coredns](docs/coredns-setup.md)
 11. [Test the setup](docs/Testing.md)
 12. Credit to [MMumshad](https://github.com/ddometita/mmumshad-kubernetes-the-hard-way/tree/master)

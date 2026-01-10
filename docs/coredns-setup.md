@@ -27,3 +27,4 @@
      #modify forward . /etc/resolv.conf to forward . 8.8.8.8 1.1.1.1
      ```
 
+[Setup (cilium) networking](networking-setup.md)
