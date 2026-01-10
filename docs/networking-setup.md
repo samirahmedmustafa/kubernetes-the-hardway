@@ -13,4 +13,5 @@
 
    ```
    cilium install --version 1.18.5
+   cilium hubble enable --ui
    ```
