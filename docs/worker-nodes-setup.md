@@ -154,6 +154,12 @@ EOF
     scp /etc/systemd/system/containerd.service worker-2:/etc/systemd/system/
 ```
 
+```
+       systemctl daemon-reload
+       systemctl enable --now kubelet
+       ssh worker-2 systemctl daemon-reload
+       ssh worker-2 systemctl enable --now kubelet
+```
 7. Download and install cilium binaries for networking (as noted in cilium [website](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/))
 ```
     CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
