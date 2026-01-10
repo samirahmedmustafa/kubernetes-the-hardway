@@ -67,7 +67,6 @@ Requires=containerd.service
 
 [Service]
 ExecStart=/usr/local/bin/kubelet \\
-  --image-pull-progress-deadline=2m \\
   --kubeconfig=/var/lib/kubernetes/kubeconfig \\
   --bootstrap-kubeconfig=/var/lib/kubernetes/bootstrap-kubeconfig \\
   --config=/var/lib/kubernetes/config.yaml \\
