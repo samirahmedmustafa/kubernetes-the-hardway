@@ -13,12 +13,13 @@
         https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-proxy \
         https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubelet \
         https://github.com/containerd/containerd/releases/download/v2.2.1/containerd-2.2.1-linux-amd64.tar.gz \
-       https://github.com/opencontainers/runc/releases/download/v1.4.0/runc.amd64      
+        https://github.com/opencontainers/runc/releases/download/v1.4.0/runc.amd64      
 ```
 
 ```
     tar -xzf containerd-2.2.1-linux-amd64.tar.gz
     install bin/* /usr/local/bin/
+    install -m 755 runc.amd64 /usr/local/sbin/runc
 ```
 2. Create directories
 ```
