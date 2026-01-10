@@ -21,12 +21,12 @@
     done
 ```
 
-<table>
+ <table>
     <tr><th>Service</th><th>PORT</th></tr>
     <tr><td>etcd</td><td>2380/tcp</td></tr>
     <tr><td>etcd</td><td>2379/tcp</td></tr>
-    <tr><td>controlplane</td><td>6443/tcp</td></tr>
-</table>
+    <tr><td>hubble-relay</td><td>10250/tcp</td></tr>
+</table
 
 - Install pkgs
 
@@ -76,17 +76,6 @@
     mv kubectl /usr/local/bin/
     scp /usr/local/bin/kubectl master-2:/usr/local/bin/
 ```
-
-```
-   firewall-cmd --add-port=[PORT] && firewall-cmd --permanent --add-port=[PORT]
-```
-
-<table>
-    <tr><th>Service</th><th>PORT</th></tr>
-    <tr><td>etcd</td><td>2380/tcp</td></tr>
-    <tr><td>etcd</td><td>2379/tcp</td></tr>
-    <tr><td>hubble-relay</td><td>10250/tcp</td></tr>
-</table>
 
 #1. etcd CA generation
 
