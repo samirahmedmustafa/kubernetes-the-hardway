@@ -89,7 +89,7 @@ EOF
 
 ```
     wget https://github.com/containernetworking/plugins/releases/download/v1.9.0/cni-plugins-linux-amd64-v1.9.0.tgz
-    tar -xzvf cni-plugins-linux-amd64-v1.9.0.tgz --directory /opt/cni/bin/
+    tar -xzvf cni-plugins-linux-amd64-v1.9.0.tgz -C /opt/cni/bin/
     rm -f cni-plugins-linux-amd64-v1.9.0.tgz
 ```
 
