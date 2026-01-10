@@ -9,6 +9,10 @@
         
 ```
 
+```
+    tar -xzf containerd-2.2.1-linux-amd64.tar.gz
+    install bin/* /usr/local/bin/
+```
 2. Create directories
 ```
     mkdir -p /var/lib/kubernetes/ /etc/cni/net.d /opt/cni/bin/
