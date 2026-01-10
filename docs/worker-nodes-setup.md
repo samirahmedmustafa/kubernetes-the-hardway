@@ -1,6 +1,13 @@
 # The below to be executed from the first node worker-1
+0. Disable swap
 
-1. Download kubernetes node binaries, containerd and 
+   ```
+       swapoff -a
+       sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
+       ssh worker-2 swapoff -a
+       ssh worker-2 sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
+   ```
+2. Download kubernetes node binaries, containerd and 
 ```
     wget -q --show-progress --https-only --timestamping https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl \
         https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-proxy \
