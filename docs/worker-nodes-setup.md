@@ -83,7 +83,6 @@ EOF
 ```
     for i in worker-1 worker-2; do
         scp kubelet.service ${i}:/etc/systemd/system/
-
     done
 ```
 5. Download and deploy CNI
