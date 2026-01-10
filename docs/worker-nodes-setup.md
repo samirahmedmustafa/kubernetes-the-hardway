@@ -23,7 +23,7 @@
     ssh worker-2 chmod +x /usr/local/bin/kube*
 ```
 
-4. Create kubelet kubelet-config.yaml
+4. Create kubelet config.yaml
 
 ```
 cat > /var/lib/kubernetes/kubelet-config.yaml <<EOF
