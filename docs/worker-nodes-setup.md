@@ -44,8 +44,60 @@ current-context: bootstrap
 preferences: {}
 users:
 - name: kubelet-bootstrap
-  user:    02b50b.05283e98dd0fd71db496ef01e8
+  user:
     token: 07401b.f395accd246ae52d
+```
+
+5. Create kubelet kubelet-config.yaml
+
+```
+cat > /var/lib/kubernetes/kubelet-config.yaml <<EOF
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    enabled: true
+  x509:
+    clientCAFile: "/var/lib/kubernetes/ca.crt"
+authorization:
+  mode: Webhook
+clusterDomain: "cluster.local"
+clusterDNS:
+  - "10.96.0.10"
+resolvConf: "/etc/resolv_k8s.conf"
+runtimeRequestTimeout: "15m"
+EOF
+```
+
+5. Create kubelet systemd service file
+
+```
+cat > /etc/systemd/system/kubelet.service <<EOF
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/kubernetes/kubernetes
+After=containerd.service
+Requires=containerd.service
+
+[Service]
+ExecStart=/usr/local/bin/kubelet \\
+  --image-pull-progress-deadline=2m \\
+  --kubeconfig=/var/lib/kubernetes/kubeconfig \\
+  --bootstrap-kubeconfig=/var/lib/kubernetes/bootstrap-kubeconfig \\
+  --config=/var/lib/kubernetes/kubelet-config.yaml \\
+  --rotate-certificates=true \\
+  --rotate-server-certificates=true \\
+  --network-plugin=cni \\
+  --register-node=true \\
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
 EOF
 ```
 

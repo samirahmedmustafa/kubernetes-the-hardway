@@ -105,14 +105,14 @@ EOF
     }
 ```
 
-7. Bootstrap Token Secret Format
+7. Bootstrap Token Secret and kubelet
+7.a Bootstrap Token Secret Format
 
 ```
 TOKEN_ID=$(openssl rand -hex 3)
 TOKEN_SECRET=$(openssl rand -hex 8)
 FULL_TOKEN="$TOKEN_ID.$TOKEN_SECRET"
-```
-```
+
 cat > bootstrap-token-${TOKEN_ID} <<EOF
 apiVersion: v1
 kind: Secret
@@ -140,13 +140,38 @@ stringData:
   auth-extra-groups: system:bootstrappers:worker,system:bootstrappers:ingress
 EOF
 
+cat > bootstrap-kubeconfig <<EOF
+
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: /var/lib/kubernetes/ca.crt
+    server: https://192.168.1.50:6443
+  name: bootstrap
+contexts:
+- context:
+    cluster: bootstrap
+    user: kubelet-bootstrap
+  name: bootstrap
+current-context: bootstrap
+preferences: {}
+users:
+- name: kubelet-bootstrap
+  user:
+    token: ${FULL_TOKEN}
+```
+
+```
+    for i in worker-1 worker-2; do
+        scp bootstrap-kubeconfig ${i}:/var/lib/kubernetes/
+    done
 ```
 
 ```
     kubectl apply -f bootstrap-token-${TOKEN_ID}
 ```
-
-7. Enable bootstrapping nodes to create CSR
+8. Enable bootstrapping nodes to create CSR
 
 ```
 cat > bootstrapping_crb.yaml <<EOF

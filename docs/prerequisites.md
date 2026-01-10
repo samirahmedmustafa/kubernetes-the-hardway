@@ -64,7 +64,7 @@
 
 ```
     for i in worker-1 worker-2; do
-        ssh ${i} mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes
+        ssh ${i} mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes /var/lib/kubelet/pki
     done
 ```
 
