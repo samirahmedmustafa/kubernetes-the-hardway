@@ -26,7 +26,7 @@
 4. Create kubelet config.yaml
 
 ```
-cat > /var/lib/kubernetes/config.yaml <<EOF
+cat > config.yaml <<EOF
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 authentication:
