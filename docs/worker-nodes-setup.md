@@ -61,6 +61,8 @@ EOF
     for i in worker-1 worker-2; do
         scp config.yaml ${i}:/var/lib/kubernetes/
     done
+    touch /etc/resolv_k8s.conf
+    ssh worker-2 touch /etc/resolv_k8s.conf
 ```
 5. Create kubelet systemd service file
 
