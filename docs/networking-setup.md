@@ -9,4 +9,8 @@
        rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 ```
 
-2.
+2. Install cilium
+
+   ```
+   cilium install --version 1.18.5
+   ```
