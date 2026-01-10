@@ -54,7 +54,7 @@ EOF
 5. Create kubelet systemd service file
 
 ```
-cat > /etc/systemd/system/kubelet.service <<EOF
+cat > kubelet.service <<EOF
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/kubernetes/kubernetes
@@ -78,9 +78,14 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-EOF
 ```
 
+```
+    for i in worker-1 worker-2; do
+        scp kubelet.service ${i}:/etc/systemd/system/
+
+    done
+```
 5. Download and deploy CNI
 
 ```
