@@ -5,7 +5,7 @@
        swapoff -a
        sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
        ssh worker-2 swapoff -a
-       ssh worker-2 sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
+       ssh worker-2 'sed -ie "s/.*swap.*defaults/#&/" /etc/fstab'
 ```
 2. Download kubernetes node binaries, containerd and 
 ```
