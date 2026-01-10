@@ -23,32 +23,7 @@
     ssh worker-2 chmod +x /usr/local/bin/kube*
 ```
 
-4. Create a bootstrap kubeconfig
-
-```
-cat > /var/lib/kubernetes/bootstrap-kubeconfig <<EOF
-
-apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    certificate-authority: /var/lib/kubernetes/ca.crt
-    server: https://192.168.1.50:6443
-  name: bootstrap
-contexts:
-- context:
-    cluster: bootstrap
-    user: kubelet-bootstrap
-  name: bootstrap
-current-context: bootstrap
-preferences: {}
-users:
-- name: kubelet-bootstrap
-  user:
-    token: 07401b.f395accd246ae52d
-```
-
-5. Create kubelet kubelet-config.yaml
+4. Create kubelet kubelet-config.yaml
 
 ```
 cat > /var/lib/kubernetes/kubelet-config.yaml <<EOF
