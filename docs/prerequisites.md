@@ -99,8 +99,9 @@
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl
     chmod +x kubectl
-    mv kubectl /usr/local/bin/
-    scp /usr/local/bin/kubectl master-2:/usr/local/bin/
+    for i in master-1 master-2; do
+      scp kubectl ${i}:/usr/local/bin/
+    done
 ```
 
 #4. export environment variable for the locations of the CA and etcd-CA (e.g. below)
