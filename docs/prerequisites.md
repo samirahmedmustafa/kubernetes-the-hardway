@@ -106,15 +106,16 @@
     rm kubectl
 ```
 
-#4. copy of the CA and etcd-CA (e.g. below)
+#4. Copy of the CA and etcd-CA (e.g. below)
 ```
    for i in master-1 master-2 worker-1 worker-2; do
-       scp ca.crt ${i}:/var/lib/kubernetes/
+       scp ca.crt ${i}:/tmp/
+       ssh $i sudo mv /tmp/ca.crt /var/lib/kubernetes/
    done
 
    for i in master-1 master-2; do
-       scp ca.key ${i}:/var/lib/kubernetes/
-       scp etcd-ca.key etcd-ca.crt ${i}:/etc/etcd/
+       scp etcd-ca.key etcd-ca.crt ${i}:/tmp/
+       ssh $i sudo mv /tmp/{etcd-ca.key,etcd-ca.crt} /etc/etcd/
    done
 ```
 
