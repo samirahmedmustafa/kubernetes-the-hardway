@@ -57,8 +57,9 @@
 - From master-1, create the below directories to organize the files
 
 ```
-    mkdir -p /etc/etcd/ /var/lib/kubernetes/
-    ssh master-2 mkdir -p /etc/etcd/ /var/lib/kubernetes/
+   for i in master-1 master-2; do
+      ssh $i sudo mkdir -p /etc/etcd/
+   done
 ```
 
 - From master-1, create the worker nodes directories
