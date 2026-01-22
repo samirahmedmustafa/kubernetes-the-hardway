@@ -34,8 +34,8 @@
 ```
     dnf install -y -q openssl tar vim wget
 
-    for i in master-2 worker-1 worker-2; do
-        ssh ${i} dnf install -y -q openssl tar vim wget
+    for i in master-1 master-2 worker-1 worker-2; do
+      ssh $i sudo mkdir /var/lib/kubernetes/
     done
 ```
 
