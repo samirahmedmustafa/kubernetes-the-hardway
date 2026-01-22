@@ -58,7 +58,7 @@
 
 ```
    for i in master-1 master-2; do
-      ssh $i sudo mkdir -p /etc/etcd/
+      ssh $i sudo mkdir /etc/etcd/
    done
 ```
 
@@ -66,7 +66,7 @@
 
 ```
     for i in worker-1 worker-2; do
-        ssh ${i} mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubelet /var/lib/kube-proxy /var/lib/kubernetes /var/run/kubernetes /var/lib/kubelet/pki
+        ssh ${i} sudo mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kube-proxy /var/lib/kubelet/pki
     done
 ```
 
