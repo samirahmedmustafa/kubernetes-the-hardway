@@ -1,38 +1,4 @@
-
-1. Generate kube-apiserver private key, certificate request and sign it with kubernetes CA (execute the below inside the CA directory)
-
-```
-    openssl genrsa -out kube-apiserver.key 2048
-    openssl req -new -key kube-apiserver.key -subj "/CN=kube-apiserver" -out kube-apiserver.csr -config openssl.cnf
-    openssl x509 -req -in kube-apiserver.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
-```
-
-```
-    openssl verify -CAfile ca.crt kube-apiserver.crt
-```
-2. Create an encryption key to be used for encryption at rest
-``` 
-    ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
-```
-
-```
-cat > encryption-config.yaml <<EOF
-kind: EncryptionConfig
-apiVersion: v1
-resources:
-  - resources:
-      - secrets
-    providers:
-      - aescbc:
-          keys:
-            - name: key1
-              secret: ${ENCRYPTION_KEY}
-      - identity: {}
-EOF
-
-```
-
-3. Create a configuration file with kube-apiserver alternative names
+1. Create a configuration file with kube-apiserver alternative names
 
 ```
 cat > openssl.cnf <<EOF
@@ -55,6 +21,38 @@ IP.3 = 192.168.1.51
 IP.4 = 192.168.1.52
 IP.5 = 127.0.0.1
 EOF
+```
+2. Generate kube-apiserver private key, certificate request and sign it with kubernetes CA (execute the below inside the CA directory)
+
+```
+    openssl genrsa -out kube-apiserver.key 2048
+    openssl req -new -key kube-apiserver.key -subj "/CN=kube-apiserver" -out kube-apiserver.csr -config openssl.cnf
+    openssl x509 -req -in kube-apiserver.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
+```
+
+```
+    openssl verify -CAfile ca.crt kube-apiserver.crt
+```
+3. Create an encryption key to be used for encryption at rest
+``` 
+    ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
+```
+
+```
+cat > encryption-config.yaml <<EOF
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: ${ENCRYPTION_KEY}
+      - identity: {}
+EOF
+
 ```
 
 4. Distribute the certificates to the master servers kubernetes directory
