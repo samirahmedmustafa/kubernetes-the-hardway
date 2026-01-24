@@ -160,6 +160,8 @@ EOF
 ```
     scp bootstrap-token.yml master-1:
 ```
+
+```
     scp bootstrap-kubeconfig root@worker-1:/var/lib/kubernetes/
     scp bootstrap-kubeconfig root@worker-2:/var/lib/kubernetes/
 ```
