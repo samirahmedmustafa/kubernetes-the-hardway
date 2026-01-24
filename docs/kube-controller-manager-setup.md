@@ -13,8 +13,8 @@
 2. Distribute the certificates and binaries to the master servers
 
 ```
-    scp kube-controller-manager.crt kube-controller-manager.key master-1:/var/lib/kubernetes/
-    scp kube-controller-manager.crt kube-controller-manager.key master-2:/var/lib/kubernetes/
+    scp kube-controller-manager.crt kube-controller-manager.key root@master-1:/var/lib/kubernetes/
+    scp kube-controller-manager.crt kube-controller-manager.key root@master-2:/var/lib/kubernetes/
 ```
 
 3. Create kubeconfig configuration file and distribute it to master servers
