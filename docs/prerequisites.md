@@ -105,7 +105,6 @@
       scp kubectl ${i}:/tmp/
       ssh $i sudo mv /tmp/kubectl /usr/local/bin/
     done
-    rm kubectl
 ```
 
 #4. Copy of the CA and etcd-CA (e.g. below)
