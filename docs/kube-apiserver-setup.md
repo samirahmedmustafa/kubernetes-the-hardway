@@ -112,6 +112,8 @@ EOF
 
 ```
     sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' kube-apiserver1.service > kube-apiserver2.service
+```
+```
     scp kube-apiserver1.service master-1:/etc/systemd/system/kube-apiserver.service
     scp kube-apiserver2.service master-2:/etc/systemd/system/kube-apiserver.service
 ```
