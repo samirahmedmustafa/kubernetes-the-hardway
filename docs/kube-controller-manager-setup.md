@@ -158,8 +158,8 @@ EOF
 ```
 
 ```
-    scp bootstrap-kubeconfig worker-1:/var/lib/kubernetes/
-    scp bootstrap-kubeconfig worker-2:/var/lib/kubernetes/
+    scp bootstrap-kubeconfig root@worker-1:/var/lib/kubernetes/
+    scp bootstrap-kubeconfig root@worker-2:/var/lib/kubernetes/
 ```
 
 ```
