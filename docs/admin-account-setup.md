@@ -5,19 +5,19 @@
 ```
     openssl genrsa -out admin.key 2048
     openssl req -new -key admin.key -subj "/CN=admin/O=system:masters" -out admin.csr
-    openssl x509 -req -in admin.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial  -out admin.crt -days 1000
+    openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out admin.crt -days 1000
 
 ```
 
 ```
-    openssl verify -CAfile /var/lib/kubernetes/ca.crt admin.crt
+    openssl verify -CAfile ca.crt admin.crt
 ```
 2.
 
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=/var/lib/kubernetes/ca.crt \
+      --certificate-authority=ca.crt \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=admin.kubeconfig
@@ -38,18 +38,18 @@
 
 ```
 
-# For the extra accounts (e.g. Samir), we will use the below process
+# (optional) For the extra accounts (e.g. Samir), we will use the below process
 
 1. Create samir private key and csr
 
-1. Create and sign samir certificates
+2. Create and sign samir certificates
 
 ```
     openssl genrsa -out samir.key 2048
     openssl req -new -key samir.key -subj "/CN=samir/O=system:masters" -out samir.csr
 ```
 
-2. Create a Kubernetes CertificateSigningRequest
+3. Create a Kubernetes CertificateSigningRequest
 
 ```
     req=$(cat samir.csr | base64 | tr -d "\n")
@@ -72,7 +72,7 @@ EOF
 
 ```
 
-3. Approve the CertificateSigningRequest
+4. Approve the CertificateSigningRequest
 
 ```
     kubectl get csr
@@ -80,12 +80,12 @@ EOF
     kubectl get csr samir -o jsonpath='{.status.certificate}'| base64 -d > samir.crt
 ```
 
-4. Configure samir certificate into kubeconfig
+5. Configure samir certificate into kubeconfig
 
 ```
 {
     kubectl config set-cluster home-cluster \
-      --certificate-authority=/var/lib/kubernetes/ca.crt \
+      --certificate-authority=ca.crt \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=samir.kubeconfig
@@ -106,7 +106,7 @@ EOF
 
 ```
 
-5. Test
+6. Test
 
 ```
     kubectl --context samir auth whoami
