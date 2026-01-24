@@ -1,3 +1,5 @@
+##From an additional server do the below activities
+
 #Create 2 certificate authorities the first is for etcd and the second is for controller plane cluster
 
 #0. Install openssl, tar and wget (preferrably in all servers)
