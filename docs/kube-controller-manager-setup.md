@@ -155,6 +155,7 @@ users:
 - name: kubelet-bootstrap
   user:
     token: ${FULL_TOKEN}
+EOF
 ```
 
 ```
