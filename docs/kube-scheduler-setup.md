@@ -69,8 +69,8 @@ EOF
 ```
 
 ```
-    scp kube-scheduler.service master-1:/etc/systemd/system/
-    scp kube-scheduler.service master-2:/etc/systemd/system/
+    scp kube-scheduler.service root@master-1:/etc/systemd/system/
+    scp kube-scheduler.service root@master-2:/etc/systemd/system/
 ```
 
 5. Download kube-apiserver binary and distribute to control plane master servers
