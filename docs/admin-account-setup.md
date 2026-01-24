@@ -37,7 +37,9 @@
 }
 
 ```
-
+```
+    scp admin.kubeconfig master-1:
+```
 # (optional) For the extra accounts (e.g. Samir), we will use the below process
 
 1. Create samir private key and csr
