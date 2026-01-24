@@ -1,7 +1,7 @@
 1. Install haproxy
 
 ```
-    ssh lb dnf install -y -q haproxy vim
+    ssh lb sudo dnf install -y -q haproxy vim
 ```
 
 2. Configure the haproxy
@@ -22,21 +22,20 @@ backend kubernetes-master-nodes
     server master-2 192.168.1.52:6443 check fall 3 rise 2
 EOF
 
-scp haproxy.cfg lb:/etc/haproxy/haproxy.cfg
-rm -f haproxy.cfg
+scp haproxy.cfg root@lb:/etc/haproxy/haproxy.cfg
 ```
 
 3. Allow 6443 port in the loadbalancer
 
 ```
-    ssh lb firewall-cmd --add-port=6443/tcp
-    ssh lb firewall-cmd --permanent --add-port=6443/tcp
+    ssh lb sudo firewall-cmd --add-port=6443/tcp
+    ssh lb sudo firewall-cmd --permanent --add-port=6443/tcp
 ```
 
 4. Restart haproxy services
 ```
-    ssh lb systemctl restart haproxy
-    ssh lb systemctl enable haproxy
+    ssh lb sudo systemctl restart haproxy
+    ssh lb sudo systemctl enable haproxy
 ```
 
 [Previous: Setup service account](service-account-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kube-apiserver](kube-apiserver-setup.md)
