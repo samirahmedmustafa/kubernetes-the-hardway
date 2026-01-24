@@ -3,17 +3,17 @@
 ```
     openssl genrsa -out kube-controller-manager.key 2048
     openssl req -new -key kube-controller-manager.key -subj "/CN=system:kube-controller-manager" -out kube-controller-manager.csr
-    openssl x509 -req -in kube-controller-manager.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial -out kube-controller-manager.crt -days 1000
+    openssl x509 -req -in kube-controller-manager.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out kube-controller-manager.crt -days 1000
 ``` 
 
 ```
-    openssl verify -CAfile /var/lib/kubernetes/ca.crt kube-controller-manager.crt
+    openssl verify -CAfile ca.crt kube-controller-manager.crt
 ```
 
 2. Distribute the certificates and binaries to the master servers
 
 ```
-    cp kube-controller-manager.crt kube-controller-manager.key /var/lib/kubernetes/
+    scp kube-controller-manager.crt kube-controller-manager.key master-1:/var/lib/kubernetes/
     scp kube-controller-manager.crt kube-controller-manager.key master-2:/var/lib/kubernetes/
 ```
 
@@ -21,36 +21,36 @@
 
 ```
 {
-  kubectl config set-cluster home-cluster \
-    --certificate-authority=/var/lib/kubernetes/ca.crt \
+  ./kubectl config set-cluster home-cluster \
+    --certificate-authority=ca.crt \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
     --kubeconfig=kube-controller-manager.kubeconfig
 
-  kubectl config set-credentials system:kube-controller-manager \
+  ./kubectl config set-credentials system:kube-controller-manager \
     --client-certificate=kube-controller-manager.crt \
     --client-key=kube-controller-manager.key \
     --embed-certs=true \
     --kubeconfig=kube-controller-manager.kubeconfig
 
-  kubectl config set-context default \
+  ./kubectl config set-context default \
     --cluster=home-cluster \
     --user=system:kube-controller-manager \
     --kubeconfig=kube-controller-manager.kubeconfig
 
-  kubectl config use-context default --kubeconfig=kube-controller-manager.kubeconfig
+  ./kubectl config use-context default --kubeconfig=kube-controller-manager.kubeconfig
 }
 ```
 
 ```
-    cp kube-controller-manager.kubeconfig /var/lib/kubernetes/
+    scp kube-controller-manager.kubeconfig master-1:/var/lib/kubernetes/
     scp kube-controller-manager.kubeconfig master-2:/var/lib/kubernetes/
 ```
 
 4. Create systemd service file
 
 ```
-cat <<EOF | sudo tee /etc/systemd/system/kube-controller-manager.service
+cat <<EOF | sudo tee kube-controller-manager.service
 [Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/kubernetes/kubernetes
@@ -65,7 +65,7 @@ ExecStart=/usr/local/bin/kube-controller-manager \\
   --kubeconfig=/var/lib/kubernetes/kube-controller-manager.kubeconfig \\
   --leader-elect=true \\
   --root-ca-file=/var/lib/kubernetes/ca.crt \\
-  --controllers=*,tokencleaner \\
+  --controllers=*,bootstrapsigner,tokencleaner \\
   --cluster-signing-cert-file=/var/lib/kubernetes/ca.crt \\
   --cluster-signing-key-file=/var/lib/kubernetes/ca.key \\
   --service-account-private-key-file=/var/lib/kubernetes/service-account.key \\
@@ -81,39 +81,34 @@ EOF
 ```
 
 ```
-    scp /etc/systemd/system/kube-controller-manager.service master-2:/etc/systemd/system/
+    scp kube-controller-manager.service root@master-1:/etc/systemd/system/
+    scp kube-controller-manager.service root@master-2:/etc/systemd/system/
 ```
 
 5. Download kube-apiserver binary and distribute to control plane master servers
-
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-controller-manager
     chmod +x kube-controller-manager
-    mv kube-controller-manager /usr/local/bin/
-    scp /usr/local/bin/kube-controller-manager master-2:/usr/local/bin/
-    ssh master-2 chmod +x /usr/local/bin/kube-controller-manager
+    scp kube-controller-manager root@master-1:/usr/local/bin/
+    scp kube-controller-manager root@master-2:/usr/local/bin/
 ```
 
 6. Start kube-controller-manager service
-
 ```
-    {
-        systemctl daemon-reload
-        systemctl enable --now kube-controller-manager 
-        ssh master-2 systemctl daemon-reload
-        ssh master-2 systemctl enable --now kube-controller-manager 
-    }
+    for i in master-1 master-2; do
+        ssh $i sudo systemctl daemon-reload
+        ssh $i sudo systemctl enable --now kube-controller-manager
+    done
 ```
 
 7. Bootstrap Token Secret and kubelet
-7.a Bootstrap Token Secret Format
-
+ 7.a Bootstrap Token Secret Format
 ```
 TOKEN_ID=$(openssl rand -hex 3)
 TOKEN_SECRET=$(openssl rand -hex 8)
 FULL_TOKEN="$TOKEN_ID.$TOKEN_SECRET"
 
-cat > bootstrap-token-${TOKEN_ID} <<EOF
+cat > bootstrap-token.yml <<EOF
 apiVersion: v1
 kind: Secret
 metadata:
@@ -163,18 +158,17 @@ users:
 ```
 
 ```
-    for i in worker-1 worker-2; do
-        scp bootstrap-kubeconfig ${i}:/var/lib/kubernetes/
-    done
+    scp bootstrap-kubeconfig worker-1:/var/lib/kubernetes/
+    scp bootstrap-kubeconfig worker-2:/var/lib/kubernetes/
 ```
 
 ```
-    kubectl apply -f bootstrap-token-${TOKEN_ID}
+    ssh master-1 sudo /usr/local/bin/kubectl apply -f bootstrap-token.yml --kubeconfig admin.kubeconfig
 ```
-8. Enable bootstrapping nodes to create CSR
+ 7.b Enable bootstrapping nodes to create CSR
 
 ```
-cat > bootstrapping_crb.yaml <<EOF
+cat > create_csrs_for_bootstrapping.yaml <<EOF
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -190,9 +184,11 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 ```
-
 ```
-    kubectl apply -f create_csrs_for_bootstrapping.yaml
+    scp create_csrs_for_bootstrapping.yaml master-1:
+```
+```
+    ssh master-1 sudo /usr/local/bin/kubectl apply -f create_csrs_for_bootstrapping.yaml --kubeconfig admin.kubeconfig
 ```
 
 8. Approve all CSRs for the group "system:bootstrappers"
@@ -215,7 +211,10 @@ EOF
 ```
 
 ```
-    kubectl apply -f auto_approve_csrs.yaml
+    scp auto_approve_csrs.yaml master-1:
+```
+```
+    ssh master-1 sudo /usr/local/bin/kubectl apply -f auto_approve_csrs.yaml --kubeconfig admin.kubeconfig
 ```
 
 9. # Approve renewal CSRs for the group "system:nodes"
@@ -238,7 +237,10 @@ EOF
 ```
 
 ```
-    kubectl apply -f auto_approve_renewals.yaml
+    scp auto_approve_renewals.yaml master-1:
+```
+```
+    ssh master-1 sudo /usr/local/bin/kubectl apply -f auto_approve_renewals.yaml --kubeconfig admin.kubeconfig
 ```
 
 [Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
