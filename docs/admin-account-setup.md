@@ -16,24 +16,24 @@
 
 ```
 {
-    kubectl config set-cluster home-cluster \
+    ./kubectl config set-cluster home-cluster \
       --certificate-authority=ca.crt \
       --embed-certs=true \
       --server=https://192.168.1.50:6443 \
       --kubeconfig=admin.kubeconfig
 
-    kubectl config set-credentials admin \
+    ./kubectl config set-credentials admin \
       --client-certificate=admin.crt \
       --client-key=admin.key \
       --embed-certs=true \
       --kubeconfig=admin.kubeconfig
 
-    kubectl config set-context default \
+    ./kubectl config set-context default \
       --cluster=home-cluster \
       --user=admin \
       --kubeconfig=admin.kubeconfig
 
-    kubectl config use-context default --kubeconfig=admin.kubeconfig
+    ./kubectl config use-context default --kubeconfig=admin.kubeconfig
 }
 
 ```
