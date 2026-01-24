@@ -43,8 +43,8 @@
 ```
 
 ```
-    scp kube-controller-manager.kubeconfig master-1:/var/lib/kubernetes/
-    scp kube-controller-manager.kubeconfig master-2:/var/lib/kubernetes/
+    scp kube-controller-manager.kubeconfig root@master-1:/var/lib/kubernetes/
+    scp kube-controller-manager.kubeconfig root@master-2:/var/lib/kubernetes/
 ```
 
 4. Create systemd service file
