@@ -136,7 +136,6 @@ stringData:
 EOF
 
 cat > bootstrap-kubeconfig <<EOF
-
 apiVersion: v1
 kind: Config
 clusters:
