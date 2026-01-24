@@ -69,6 +69,7 @@ EOF
 ```
 
 ```
+    scp /etc/systemd/system/kube-scheduler.service master-1:/etc/systemd/system/
     scp /etc/systemd/system/kube-scheduler.service master-2:/etc/systemd/system/
 ```
 
