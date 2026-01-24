@@ -4,11 +4,11 @@
 ```
     openssl genrsa -out kube-apiserver.key 2048
     openssl req -new -key kube-apiserver.key -subj "/CN=kube-apiserver" -out kube-apiserver.csr -config openssl.cnf
-    openssl x509 -req -in kube-apiserver.csr -CA /var/lib/kubernetes/ca.crt -CAkey /var/lib/kubernetes/ca.key -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
+    openssl x509 -req -in kube-apiserver.csr -CA ca.crt -CAkey ca.key -CAcreateserial  -out kube-apiserver.crt -extensions v3_req -extfile openssl.cnf -days 1000
 ```
 
 ```
-    openssl verify -CAfile /var/lib/kubernetes/ca.crt kube-apiserver.crt
+    openssl verify -CAfile ca.crt kube-apiserver.crt
 ```
 2. Create an encryption key to be used for encryption at rest
 ``` 
@@ -60,14 +60,14 @@ EOF
 4. Distribute the certificates to the master servers kubernetes directory
 
 ```
-    cp kube-apiserver.key kube-apiserver.crt encryption-config.yaml /var/lib/kubernetes/
-    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml master-2:/var/lib/kubernetes/
+    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-1:/var/lib/kubernetes/
+    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-2:/var/lib/kubernetes/
 ```
 
 5. Create kube-apiserver service file (in each master server)
 
 ```
-cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
+cat <<EOF | sudo tee kube-apiserver1.service
 [Unit]
 Description=Kubernetes API Server
 Documentation=https://github.com/kubernetes/kubernetes
@@ -113,26 +113,27 @@ EOF
 ```
 
 ```
-    sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' /etc/systemd/system/kube-apiserver.service > /tmp/kube-apiserver.service
-    scp /tmp/kube-apiserver.service master-2:/etc/systemd/system/kube-apiserver.service
+    sed -e 's/192.168.1.51/192.168.1.52/' -e 's/etcd-server1/etcd-server2/' kube-apiserver1.service > kube-apiserver2.service
+    scp kube-apiserver1.service master-1:/etc/systemd/system/kube-apiserver.service
+    scp kube-apiserver2.service master-2:/etc/systemd/system/kube-apiserver.service
 ```
 6. Download kube-apiserver binary and distribute to control plane master servers
 
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-apiserver
     chmod +x kube-apiserver
-    mv kube-apiserver /usr/local/bin/
-    scp /usr/local/bin/kube-apiserver master-2:/usr/local/bin/
+    scp kube-apiserver root@master-1:/usr/local/bin/
+    scp kube-apiserver root@master-2:/usr/local/bin/
 ```
 
 7. Start kube-apiserver service
 
 ```
 {
-    systemctl daemon-reload
-    systemctl enable --now kube-apiserver
-    ssh master-2 systemctl daemon-reload
-    ssh master-2 systemctl enable --now kube-apiserver
+    ssh master-1 sudo systemctl daemon-reload
+    ssh master-1 sudo systemctl enable --now kube-apiserver
+    ssh master-2 sudo systemctl daemon-reload
+    ssh master-2 sudo systemctl enable --now kube-apiserver
 }
 ```
 [Previous: Setup haproxy loadbalancer](lb-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup kube-scheduler](kube-scheduler-setup.md)
