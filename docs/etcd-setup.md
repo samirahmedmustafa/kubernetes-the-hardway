@@ -1,6 +1,6 @@
 # etcd_configuration
 
-- Create and edit the servers openssl configuration files such as mentioned [server1](etcd-server1.cnf) and [server2](etcd-server2.cnf)
+- Create and edit the servers openssl configuration files such as mentioned [server1](etcd-server1.cnf) as etcd-server1.cnf and [server2](etcd-server2.cnf) as etcd-server2.cnf
 
 - Generate the server certificates and sign them as below
 
