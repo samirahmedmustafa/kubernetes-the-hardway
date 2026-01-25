@@ -15,7 +15,6 @@ Download and install cilium binaries for networking (as noted in cilium [website
 
    ```
    ssh master-1 sudo cp admin.kubeconfig ~root/.kube/config
-   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5
-   ssh master-1 sudo /usr/local/bin/cilium hubble enable --ui
+   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5 --set ipam.operator.clusterPoolIPv4PodCIDRList={10.96.0.0/12} --set hubble.enabled=true --set hubble.relay.enabled=true --set hubble.ui.enabled=true
    ```
 [Previous: Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup coredns](coredns-setup.md)
