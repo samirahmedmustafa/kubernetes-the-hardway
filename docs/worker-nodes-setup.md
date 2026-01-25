@@ -1,42 +1,38 @@
-# The below to be executed from the first node worker-1
-0. Disable swap
+1. Disable swap
 
 ```
-       swapoff -a
-       sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
-       ssh worker-2 swapoff -a
-       ssh worker-2 'sed -ie "s/.*swap.*defaults/#&/" /etc/fstab'
+       ssh worker-1 sudo swapoff -a
+       ssh worker-1 sudo sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
+       ssh worker-1 sudo swapoff -a
+       ssh worker-2 sudo sed -ie "s/.*swap.*defaults/#&/" /etc/fstab
 ```
-2. Download kubernetes node binaries, containerd and 
+2. Download kubernetes node binaries, containerd and CNI
 ```
-    wget -q --show-progress --https-only --timestamping https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl \
-        https://dl.k8s.io/v1.34.2/bin/linux/amd64/kube-proxy \
+    wget -q --show-progress --https-only --timestamping \
         https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubelet \
         https://github.com/containerd/containerd/releases/download/v2.2.1/containerd-2.2.1-linux-amd64.tar.gz \
+        https://github.com/containernetworking/plugins/releases/download/v1.9.0/cni-plugins-linux-amd64-v1.9.0.tgz \
         https://github.com/opencontainers/runc/releases/download/v1.4.0/runc.amd64      
 ```
 
 ```
-    tar -xzf containerd-2.2.1-linux-amd64.tar.gz
-    install bin/* /usr/local/bin/
-    install -m 755 runc.amd64 /usr/local/sbin/runc
-```
-2. Create directories
-```
-    mkdir -p /var/lib/kubernetes/ /etc/cni/net.d /opt/cni/bin/
-    ssh worker-2 mkdir -p /etc/cni/net.d /opt/cni/bin /var/lib/kubernetes/
+    mkdir containerd/ cni/
+    tar -xzf containerd-2.2.1-linux-amd64.tar.gz -C containerd
+    tar -xzf cni-plugins-linux-amd64-v1.9.0.tgz -C cni/
+    scp cni/* containerd/* root@worker-1:/usr/local/bin/
+    scp runc.amd64 root@worker-1:/usr/local/sbin/runc
+    scp cni/* containerd/* root@worker-2:/usr/local/bin/
+    scp runc.amd64 root@worker-2:/usr/local/sbin/runc
 ```
 
 3. Change binaries to execution in the 2 worker nodes
 ```
-    chmod +x kubectl kube-proxy kubelet
-    install kubectl kube-proxy kubelet /usr/local/bin/
-    scp /usr/local/bin/kube* worker-2:/usr/local/bin/
-    ssh worker-2 chmod +x /usr/local/bin/kube*
+    chmod +x kubelet
+    scp kubelet root@worker-1:/usr/local/bin/
+    scp kubelet root@worker-2:/usr/local/bin/
 ```
 
 4. Create kubelet config.yaml
-
 ```
 cat > config.yaml <<EOF
 kind: KubeletConfiguration
@@ -53,20 +49,17 @@ authorization:
 clusterDomain: "cluster.local"
 clusterDNS:
   - "10.96.0.10"
-resolvConf: "/etc/resolv_k8s.conf"
+resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
 EOF
 ```
 
 ```
-    for i in worker-1 worker-2; do
-        scp config.yaml ${i}:/var/lib/kubernetes/
-    done
-    touch /etc/resolv_k8s.conf
-    ssh worker-2 touch /etc/resolv_k8s.conf
+    scp config.yaml root@worker-1:/var/lib/kubernetes/
+    scp config.yaml root@worker-2:/var/lib/kubernetes/
 ```
-5. Create kubelet systemd service file
 
+5. Create kubelet systemd service file
 ```
 cat > kubelet.service <<EOF
 [Unit]
@@ -93,36 +86,14 @@ EOF
 ```
 
 ```
-    for i in worker-1 worker-2; do
-        scp kubelet.service ${i}:/etc/systemd/system/
-    done
-```
-5. Download and deploy CNI
-
-```
-    wget https://github.com/containernetworking/plugins/releases/download/v1.9.0/cni-plugins-linux-amd64-v1.9.0.tgz
-    tar -xzvf cni-plugins-linux-amd64-v1.9.0.tgz -C /opt/cni/bin/
-    rm -f cni-plugins-linux-amd64-v1.9.0.tgz
+    scp kubelet.service root@worker-1:/etc/systemd/system/
+    scp kubelet.service root@worker-2:/etc/systemd/system/
 ```
 
 6. Deploy containerd systemd service file
 
 ```
-cat > /etc/systemd/system/containerd.service <<EOF
-# Copyright The containerd Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
+cat > containerd.service <<EOF
 [Unit]
 Description=containerd container runtime
 Documentation=https://containerd.io
@@ -137,14 +108,8 @@ Delegate=yes
 KillMode=process
 Restart=always
 RestartSec=5
-
-# Having non-zero Limit*s causes performance problems due to accounting overhead
-# in the kernel. We recommend using cgroups to do container-local accounting.
 LimitNPROC=infinity
 LimitCORE=infinity
-
-# Comment TasksMax if your systemd version does not supports it.
-# Only systemd 226 and above support this version.
 TasksMax=infinity
 OOMScoreAdjust=-999
 
@@ -154,13 +119,14 @@ EOF
 ```
 
 ```
-    scp /etc/systemd/system/containerd.service worker-2:/etc/systemd/system/
+    scp containerd.service root@worker-1:/etc/systemd/system/
+    scp containerd.service root@worker-2:/etc/systemd/system/
 ```
 
 ```
-       systemctl daemon-reload
-       systemctl enable --now kubelet
-       ssh worker-2 systemctl daemon-reload
-       ssh worker-2 systemctl enable --now kubelet
+       ssh worker-1 sudo systemctl daemon-reload
+       ssh worker-1 sudo systemctl enable --now containerd kubelet
+       ssh worker-2 sudo systemctl daemon-reload
+       ssh worker-2 sudo systemctl enable --now containerd kubelet
 ```
 [Setup kube-controller-manager](kube-controller-manager-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup (cilium) networking](networking-setup.md)
