@@ -101,10 +101,8 @@
 ```
     wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubectl
     chmod +x kubectl
-    for i in master-1 master-2; do
-      scp kubectl ${i}:/tmp/
-      ssh $i sudo mv /tmp/kubectl /usr/local/bin/
-    done
+    scp kubectl root@master-1:/usr/local/bin/
+    scp kubectl root@master-2:/usr/local/bin/
 ```
 
 #4. Copy of the CA and etcd-CA (e.g. below)
