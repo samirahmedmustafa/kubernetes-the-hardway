@@ -139,7 +139,7 @@ EOF
 
 8. Create a cluster role binding for kube-apiserver to kubelet proxy
 ```
-    kubectl create clusterrolebinding kube-apiserver-to-kubelet \
+    ssh master-1 sudo /usr/local/bin/kubectl create clusterrolebinding kube-apiserver-to-kubelet \
       --clusterrole=system:kubelet-api-admin \
       --user=kube-apiserver
     kubectl auth can-i get nodes/proxy --as kube-apiserver
