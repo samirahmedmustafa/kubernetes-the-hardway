@@ -19,6 +19,8 @@
     mkdir containerd/ cni/
     tar -xzf containerd-2.2.1-linux-amd64.tar.gz -C containerd
     tar -xzf cni-plugins-linux-amd64-v1.9.0.tgz -C cni/
+```
+```
     scp cni/* containerd/* root@worker-1:/usr/local/bin/
     scp runc.amd64 root@worker-1:/usr/local/sbin/runc
     scp cni/* containerd/* root@worker-2:/usr/local/bin/
