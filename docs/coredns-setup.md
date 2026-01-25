@@ -13,6 +13,7 @@
   scp coredns.yaml master-1:
 ```
 3. Edit coredns.yaml, replace the ConfigMap with the below
+   
 replace
   ```
 grep -A23 ConfigMap coredns.yaml
@@ -85,4 +86,5 @@ Error from server (Forbidden): Forbidden (user=kube-apiserver, verb=get, resourc
 ```
 
 [Setup (cilium) networking](networking-setup.md)
+
 
