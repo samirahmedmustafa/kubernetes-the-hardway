@@ -1,6 +1,8 @@
 1. Check whether the certificate are approved or not
 ```
-  kubectl get csr
+  ssh master-1 'sudo /usr/local/bin/kubectl get csr
+```
+```
   #approve them if not
   ssh master-1 'sudo /usr/local/bin/kubectl get csr -o name | xargs sudo /usr/local/bin/kubectl certificate approve'
 ```
@@ -80,6 +82,7 @@ data:
 
 
 [Setup (cilium) networking](networking-setup.md)
+
 
 
 
