@@ -30,6 +30,9 @@
     <tr><td>etcd</td><td>2379/tcp</td></tr>
     <tr><td>kube-apiserver</td><td>6443/tcp</td></tr>
     <tr><td>hubble-relay</td><td>10250/tcp</td></tr>
+    <tr><td>VXLAN</td><td>8472/udp</td></tr>
+    <tr><td>DNS</td><td>53/tcp</td></tr>
+    <tr><td>DNS</td><td>53/udp</td></tr>
 </table
 
 - Install pkgs
