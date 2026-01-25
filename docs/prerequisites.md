@@ -17,9 +17,10 @@
 
 ```
     for i in 2380/tcp 2379/tcp 6443/tcp; do
-        firewall-cmd --add-port=${i} && firewall-cmd --permanent --add-port=${i}
-        ssh master-2 firewall-cmd --add-port=${i}
-        ssh master-2 firewall-cmd --permanent --add-port=${i}
+        ssh master-1 sudo firewall-cmd --add-port=${i}
+        ssh master-1 sudo firewall-cmd --permanent --add-port=${i}
+        ssh master-2 sudo firewall-cmd --add-port=${i}
+        ssh master-2 sudo firewall-cmd --permanent --add-port=${i}
     done
 ```
 
@@ -34,7 +35,9 @@
 - Install pkgs
 
 ```
-    dnf install -y -q openssl tar vim wget
+    for i in master-1 master-2 worker-1 worker-2 lb; do
+       ssh $i sudo dnf install -y -q openssl tar vim wget
+    done
 
     for i in master-1 master-2 worker-1 worker-2; do
       ssh $i sudo mkdir /var/lib/kubernetes/
@@ -46,25 +49,23 @@
 - (Optional) update /etc/hosts in all  servers as below
 
 ```
-    cat /etc/hosts
-
-        192.168.1.50 lb
-        192.168.1.51 master-1
-        192.168.1.52 master-2
-        192.168.1.53 worker-1
-        192.168.1.54 worker-2
-
+   for i in master-1 master-2 worker-1 worker-2; do
+      ssh $i sudo echo 192.168.1.50 lb >> /etc/hosts
+      ssh $i sudo echo 192.168.1.51 master-1 >> /etc/hosts
+      ssh $i sudo echo 192.168.1.52 master-2 >> /etc/hosts
+      ssh $i sudo echo 192.168.1.53 worker-1 >> /etc/hosts
+      ssh $i sudo echo 192.168.1.54 worker-2 >> /etc/hosts
+   done
 ```
 
 - From master-1, create the below directories to organize the files
-
 ```
    for i in master-1 master-2; do
       ssh $i sudo mkdir /etc/etcd/
    done
 ```
 
-- From master-1, create the worker nodes directories
+- Create the worker nodes directories
 
 ```
     for i in worker-1 worker-2; do
@@ -89,7 +90,6 @@
 ```
 
 #2. kubernetes CA generation
-
 ```
    openssl genrsa -out ca.key 2048
    openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr
@@ -109,15 +109,12 @@
 
 #4. Copy of the CA and etcd-CA (e.g. below)
 ```
-   for i in master-1 master-2 worker-1 worker-2; do
-       scp ca.crt ${i}:/tmp/
-       ssh $i sudo mv /tmp/ca.crt /var/lib/kubernetes/
-   done
-
-   for i in master-1 master-2; do
-       scp etcd-ca.key etcd-ca.crt ${i}:/tmp/
-       ssh $i sudo mv /tmp/{etcd-ca.key,etcd-ca.crt} /etc/etcd/
-   done
+   scp ca.crt ca.key etcd-ca.key etcd-ca.crt root@master-1:/var/lib/kubernetes/
+   scp ca.crt ca.key etcd-ca.key etcd-ca.crt root@master-2:/var/lib/kubernetes/
+   scp ca.crt root@worker-1:/var/lib/kubernetes/
+   scp ca.crt root@worker-2:/var/lib/kubernetes/
+   scp etcd-ca.key etcd-ca.crt root@master-1:/etc/etcd/
+   scp etcd-ca.key etcd-ca.crt root@master-2:/etc/etcd/
 ```
 
 #These certificates needs to be kept as they will be used to sign future certificates, so basically they will be part of your local Certificate Authority
