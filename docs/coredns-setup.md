@@ -15,8 +15,8 @@
    
 replace
   ```
-grep -A23 ConfigMap coredns.yaml
-
+grep -B1 -A23 ConfigMap coredns.yaml
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: coredns
@@ -88,6 +88,7 @@ Error from server (Forbidden): Forbidden (user=kube-apiserver, verb=get, resourc
 ```
 
 [Setup (cilium) networking](networking-setup.md)
+
 
 
 
