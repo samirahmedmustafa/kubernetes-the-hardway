@@ -78,18 +78,9 @@ data:
   ssh master-1 sudo /usr/local/bin/kubectl apply -f coredns.yaml
 ```
 
-4. Crash issues
-```
-kubectl -n kube-system logs coredns-769f759fcc-jxwfz
-Error from server (Forbidden): Forbidden (user=kube-apiserver, verb=get, resource=nodes, subresource(s)=[proxy])
-```
-   - plugin/forward: no nameservers found
-```
-  kubectl -n kube-system edit configmap coredns
-  #modify forward . /etc/resolv.conf to forward . 8.8.8.8 1.1.1.1
-```
 
 [Setup (cilium) networking](networking-setup.md)
+
 
 
 
