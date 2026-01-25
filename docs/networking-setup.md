@@ -8,7 +8,7 @@ Download and install cilium binaries for networking (as noted in cilium [website
        sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
        mkdir cilium_dir
        tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz cilium_dir
-       scp -p cilium_dir/* root@master-1/usr/local/bin/
+       scp -p cilium_dir/* root@master-1:/usr/local/bin/
 ```
 
 2. Install cilium
