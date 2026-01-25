@@ -13,6 +13,8 @@
 
    ```
    ssh master-1 sudo cp admin.kubeconfig ~root/.kube/config
+   ```
+   ```
    ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5 \
    --set kubeProxyReplacement=true \
    --set ipam.mode=cluster-pool \
