@@ -134,36 +134,10 @@ stringData:
   # Extra groups to authenticate the token as. Must start with "system:bootstrappers:"
   auth-extra-groups: system:bootstrappers:worker,system:bootstrappers:ingress
 EOF
-
-cat > bootstrap-kubeconfig <<EOF
-apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    certificate-authority: /var/lib/kubernetes/ca.crt
-    server: https://192.168.1.50:6443
-  name: bootstrap
-contexts:
-- context:
-    cluster: bootstrap
-    user: kubelet-bootstrap
-  name: bootstrap
-current-context: bootstrap
-preferences: {}
-users:
-- name: kubelet-bootstrap
-  user:
-    token: ${FULL_TOKEN}
-EOF
 ```
 
 ```
     scp bootstrap-token.yml master-1:
-```
-
-```
-    scp bootstrap-kubeconfig root@worker-1:/var/lib/kubernetes/
-    scp bootstrap-kubeconfig root@worker-2:/var/lib/kubernetes/
 ```
 
 ```
