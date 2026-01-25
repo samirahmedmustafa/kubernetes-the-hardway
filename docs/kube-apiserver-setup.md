@@ -136,4 +136,12 @@ EOF
     ssh master-2 sudo systemctl enable --now kube-apiserver
 }
 ```
+
+8. Create a cluster role binding for kube-apiserver to kubelet proxy
+```
+    kubectl create clusterrolebinding kube-apiserver-to-kubelet \
+      --clusterrole=system:kubelet-api-admin \
+      --user=kube-apiserver
+    kubectl auth can-i get nodes/proxy --as kube-apiserver
+```
 [Previous: Setup haproxy loadbalancer](lb-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup kube-scheduler](kube-scheduler-setup.md)
