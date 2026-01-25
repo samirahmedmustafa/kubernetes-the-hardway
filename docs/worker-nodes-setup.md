@@ -124,9 +124,9 @@ EOF
 ```
 
 ```
-       ssh worker-1 sudo systemctl daemon-reload
-       ssh worker-1 sudo systemctl enable --now containerd kubelet
-       ssh worker-2 sudo systemctl daemon-reload
-       ssh worker-2 sudo systemctl enable --now containerd kubelet
+    ssh worker-1 sudo systemctl daemon-reload
+    ssh worker-1 sudo systemctl enable --now containerd kubelet
+    ssh worker-2 sudo systemctl daemon-reload
+    ssh worker-2 sudo systemctl enable --now containerd kubelet
 ```
 [Setup kube-controller-manager](kube-controller-manager-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Setup (cilium) networking](networking-setup.md)
