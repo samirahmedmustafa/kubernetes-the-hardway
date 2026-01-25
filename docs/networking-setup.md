@@ -14,7 +14,8 @@ Download and install cilium binaries for networking (as noted in cilium [website
 2. Install cilium
 
    ```
-   ssh master-1 sudo cilium install --version 1.18.5
-   ssh master-1 sudo cilium hubble enable --ui
+   ssh master-1 sudo cp admin.kubeconfig ~root/.kube/config
+   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5
+   ssh master-1 sudo /usr/local/bin/cilium hubble enable --ui
    ```
 [Previous: Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup coredns](coredns-setup.md)
