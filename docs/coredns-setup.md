@@ -2,21 +2,20 @@
 ```
   kubectl get csr
   #approve them if not
-  kubectl get csr -o name | xargs kubectl certificate approve
+  ssh master-1 'sudo /usr/local/bin/kubectl get csr -o name | xargs sudo /usr/local/bin/kubectl certificate approve'
 ```
 
 2. Download the coredns manifest
 
 ```
   git clone https://github.com/coredns/deployment.git
-  cd deployment/kubernetes/
-  cp deployment/kubernetes/coredns.yaml.sed ./coredns.yaml
-  sed -ie 's/CLUSTER_DNS_IP/10.96.0.10/' coredns.yaml
+  sed -e 's/CLUSTER_DNS_IP/10.96.0.10/' deployment/kubernetes/coredns.yaml.sed > coredns.yaml
+  scp coredns.yaml master-1:
 ```
 
 3. Apply the coredns
 ```
-  kubectl apply -f coredns.yaml
+  ssh master-1 sudo /usr/local/bin/kubectl apply -f coredns.yaml
 ```
 
 4. Crash issues
