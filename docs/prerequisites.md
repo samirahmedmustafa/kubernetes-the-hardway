@@ -73,7 +73,7 @@
 
 ```
     for i in worker-1 worker-2; do
-        ssh ${i} sudo mkdir -p /etc/cni/net.d/ /opt/cni/bin
+        ssh ${i} sudo mkdir -p /etc/cni/net.d/ /opt/cni/bin /var/lib/kubernetes/
     done
 ```
 
