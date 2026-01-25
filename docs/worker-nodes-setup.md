@@ -90,8 +90,7 @@ EOF
     scp kubelet.service root@worker-2:/etc/systemd/system/
 ```
 
-6. Generate the token kubeconfig file for workers
-
+6. Generate the bootstrapper token kubeconfig file for worker nodes and copy it to worker nodes
 ```
     token=`ssh master-1 "sudo /usr/local/bin/kubectl -n kube-system get secrets -o jsonpath='{.items[?(@.type==\"bootstrap.kubernetes.io/token\")].metadata.name}' --kubeconfig admin.kubeconfig"`
     token_id=$(echo ${token} | awk -F'-' '{ print $NF}')
@@ -120,6 +119,11 @@ users:
   user:
     token: ${tkn}
 EOF
+```
+
+```
+   scp bootstrap-kubeconfig root@worker-1:/var/lib/kubernetes/
+   scp bootstrap-kubeconfig root@worker-2:/var/lib/kubernetes/
 ```
 7. Deploy containerd systemd service file
 ```
