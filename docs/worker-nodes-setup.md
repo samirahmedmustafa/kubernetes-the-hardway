@@ -2,9 +2,9 @@
 
 ```
        ssh worker-1 sudo swapoff -a
-       ssh worker-1 sudo sed -ie 's/.*swap.*defaults/#&/' /etc/fstab
+       ssh worker-1 "sudo sed -ie 's/.*swap.*defaults/#&/' /etc/fstab"
        ssh worker-1 sudo swapoff -a
-       ssh worker-2 sudo sed -ie "s/.*swap.*defaults/#&/" /etc/fstab
+       ssh worker-2 "sudo sed -ie "s/.*swap.*defaults/#&/" /etc/fstab"
 ```
 2. Download kubernetes node binaries, containerd and CNI
 ```
