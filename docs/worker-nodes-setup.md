@@ -8,8 +8,7 @@
 ```
 2. Download kubernetes node binaries, containerd and CNI
 ```
-    wget -q --show-progress --https-only --timestamping \
-        https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubelet \
+    wget https://dl.k8s.io/v1.34.2/bin/linux/amd64/kubelet \
         https://github.com/containerd/containerd/releases/download/v2.2.1/containerd-2.2.1-linux-amd64.tar.gz \
         https://github.com/containernetworking/plugins/releases/download/v1.9.0/cni-plugins-linux-amd64-v1.9.0.tgz \
         https://github.com/opencontainers/runc/releases/download/v1.4.0/runc.amd64      
