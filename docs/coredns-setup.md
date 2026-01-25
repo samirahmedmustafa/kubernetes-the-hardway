@@ -14,8 +14,9 @@
 - Edit coredns.yaml, replace the ConfigMap with the below
    
 replace
-  ```
+```
 grep -B1 -A23 ConfigMap coredns.yaml
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -41,9 +42,10 @@ data:
         reload
         loadbalance
     }STUBDOMAINS
-  ```
+```
 with the below
-  ```
+```
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: coredns
@@ -88,6 +90,7 @@ Error from server (Forbidden): Forbidden (user=kube-apiserver, verb=get, resourc
 ```
 
 [Setup (cilium) networking](networking-setup.md)
+
 
 
 
