@@ -21,10 +21,10 @@
 ```
 ```
     chmod +x runc.amd64
-    scp cni/* containerd/bin/* root@worker-1:/usr/local/bin/
-    scp runc.amd64 root@worker-1:/usr/local/sbin/runc
-    scp cni/* containerd/bin/* root@worker-2:/usr/local/bin/
-    scp runc.amd64 root@worker-2:/usr/local/sbin/runc
+    scp -p cni/* containerd/bin/* root@worker-1:/usr/local/bin/
+    scp -p runc.amd64 root@worker-1:/usr/local/sbin/runc
+    scp -p cni/* containerd/bin/* root@worker-2:/usr/local/bin/
+    scp -p runc.amd64 root@worker-2:/usr/local/sbin/runc
 ```
 
 3. Change binaries to execution in the 2 worker nodes
