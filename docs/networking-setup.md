@@ -15,13 +15,6 @@
    ssh master-1 sudo cp admin.kubeconfig ~root/.kube/config
    ```
    ```
-   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5 \
-   --set kubeProxyReplacement=true \
-   --set ipam.mode=cluster-pool \
-   --set ipam.operator.clusterPoolIPv4PodCIDRList="{10.96.0.0/12}"
-   --set enableHostReachableServices=true \
-   --set hubble.enabled=true \
-   --set hubble.relay.enabled=true \
-   --set hubble.ui.enabled=true
+   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5 --set kubeProxyReplacement=true --set ipam.operator.clusterPoolIPv4PodCIDRList="{10.96.0.0/12}" --set hubble.enabled=true --set hubble.relay.enabled=true --set hubble.ui.enabled=true
    ```
 [Previous: Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup coredns](coredns-setup.md)
