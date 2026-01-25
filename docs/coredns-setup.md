@@ -10,9 +10,8 @@
 ```
   git clone https://github.com/coredns/deployment.git
   sed -e 's/CLUSTER_DNS_IP/10.96.0.10/' deployment/kubernetes/coredns.yaml.sed > coredns.yaml
-  scp coredns.yaml master-1:
 ```
-3. Edit coredns.yaml, replace the ConfigMap with the below
+- Edit coredns.yaml, replace the ConfigMap with the below
    
 replace
   ```
@@ -70,8 +69,10 @@ data:
         loadbalance
     }
   ```
+
 3. Apply the coredns
 ```
+  scp coredns.yaml master-1:
   ssh master-1 sudo /usr/local/bin/kubectl apply -f coredns.yaml
 ```
 
@@ -87,6 +88,7 @@ Error from server (Forbidden): Forbidden (user=kube-apiserver, verb=get, resourc
 ```
 
 [Setup (cilium) networking](networking-setup.md)
+
 
 
 
