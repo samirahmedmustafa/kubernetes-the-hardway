@@ -30,8 +30,8 @@
 3. Change binaries to execution in the 2 worker nodes
 ```
     chmod +x kubelet
-    scp kubelet root@worker-1:/usr/local/bin/
-    scp kubelet root@worker-2:/usr/local/bin/
+    scp -p kubelet root@worker-1:/usr/local/bin/
+    scp -p kubelet root@worker-2:/usr/local/bin/
 ```
 
 4. Create kubelet config.yaml
