@@ -35,7 +35,7 @@ scp haproxy.cfg root@lb:/etc/haproxy/haproxy.cfg
 4. Restart haproxy services
 ```
     ssh lb sudo systemctl restart haproxy
-    ssh lb sudo systemctl enable haproxy
+    ssh lb sudo systemctl enable --now haproxy
 ```
 
 [Previous: Setup service account](service-account-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kube-apiserver](kube-apiserver-setup.md)
