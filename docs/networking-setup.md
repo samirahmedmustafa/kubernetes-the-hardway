@@ -15,10 +15,17 @@ Download and install cilium binaries for networking (as noted in cilium [website
 
    ```
    ssh master-1 sudo cp admin.kubeconfig ~root/.kube/config
-   ssh master-1 sudo /usr/local/bin/cilium install --version 1.18.5 \
-   --set ipam.operator.clusterPoolIPv4PodCIDRList={10.96.0.0/12} \
-   --set hubble.enabled=true \
-   --set hubble.relay.enabled=true \
-   --set hubble.ui.enabled=true
+   ssh master-1 sudo /usr/local/bin/cilium install \
+         --version 1.18.5 \
+         --set ipam.mode=cluster-pool \
+         --set ipam.operator.clusterPoolIPv4PodCIDRList={10.0.0.0/16} \
+         --set ipam.operator.clusterPoolIPv4MaskSize=24 \
+         --set serviceClusterIPRange=10.96.0.0/12 \
+         --set kubeProxyReplacement=true \
+         --set hubble.enabled=true \
+         --set hubble.relay.enabled=true \
+         --set hubble.ui.enabled=true \
+         --set cluster.name=home-cluster \
+         --wait
    ```
 [Previous: Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup coredns](coredns-setup.md)
