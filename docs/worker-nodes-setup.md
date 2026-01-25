@@ -20,6 +20,7 @@
     tar -xzf cni-plugins-linux-amd64-v1.9.0.tgz -C cni/
 ```
 ```
+    chmod +x runc.amd64
     scp cni/* containerd/bin/* root@worker-1:/usr/local/bin/
     scp runc.amd64 root@worker-1:/usr/local/sbin/runc
     scp cni/* containerd/bin/* root@worker-2:/usr/local/bin/
