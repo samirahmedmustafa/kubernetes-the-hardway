@@ -96,7 +96,7 @@ EOF
 ```
     token=`ssh master-1 "sudo /usr/local/bin/kubectl -n kube-system get secrets -o jsonpath='{.items[?(@.type==\"bootstrap.kubernetes.io/token\")].metadata.name}' --kubeconfig admin.kubeconfig"`
     token_id=$(echo ${token} | awk -F'-' '{ print $NF}')
-    secret64=`ssh master-1 "/usr/local/bin/kubectl -n kube-system get secret bootstrap-token-${token_id} -o jsonpath='{.data.token-secret}' --kubeconfig admin.kubeconfig"`
+    secret64=`ssh master-1 "sudo /usr/local/bin/kubectl -n kube-system get secret bootstrap-token-${token_id} -o jsonpath='{.data.token-secret}' --kubeconfig admin.kubeconfig"`
     decoded_secret=$(echo ${secret64} | base64 -d)
     tkn=$(echo ${token_id}.${decoded_secret})
 ```
