@@ -49,6 +49,9 @@ authentication:
 authorization:
   mode: Webhook
 clusterDomain: "cluster.local"
+rotate-certificates: true
+serverTLSBootstrap: true
+registerNode: true
 clusterDNS:
   - "10.96.0.10"
 resolvConf: "/etc/resolv.conf"
