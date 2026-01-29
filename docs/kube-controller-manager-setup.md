@@ -221,4 +221,10 @@ EOF
     ssh master-1 sudo /usr/local/bin/kubectl apply -f auto_approve_renewals.yaml --kubeconfig admin.kubeconfig
 ```
 
+10. Create a cluster role binding for kube-apiserver to be able to access kubelet logs
+
+```
+    ssh master-1 sudo /usr/local/bin/kubectl create clusterrolebinding kube-apiserver-to-kubelet --clusterrole=system:kubelet-api-admin --user=kube-apiserver
+```
+
 [Previous: Setup kube-apiserver](kube-apiserver-setup.md)&nbsp;&nbsp;&nbsp;&nbsp;[Setup kubelet and kube-proxy in worker nodes](worker-nodes-setup.md)
