@@ -33,6 +33,11 @@ EOF
 ```
     openssl verify -CAfile ca.crt kube-apiserver.crt
 ```
+- Create front-proxy-ca to be used in the extra options needed in the extension-apiserver-authentication configmap, which would be needed later by the metrics server
+  ```
+    openssl genrsa -out front-proxy-ca.key 2048
+    openssl req -x509 -new -nodes -key front-proxy-ca.key -subj "/CN=front-proxy-ca" -out front-proxy-ca.crt
+  ``` 
 3. Create an encryption key to be used for encryption at rest
 ``` 
     ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
@@ -58,8 +63,8 @@ EOF
 4. Distribute the certificates to the master servers kubernetes directory
 
 ```
-    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-1:/var/lib/kubernetes/
-    scp kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-2:/var/lib/kubernetes/
+    scp front-proxy-ca.crt front-proxy-ca.key kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-1:/var/lib/kubernetes/
+    scp front-proxy-ca.crt front-proxy-ca.key kube-apiserver.key kube-apiserver.crt encryption-config.yaml root@master-2:/var/lib/kubernetes/
 ```
 
 5. Create kube-apiserver service file (in each master server)
@@ -101,6 +106,11 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --client-ca-file=/var/lib/kubernetes/ca.crt \\
   --tls-cert-file=/var/lib/kubernetes/kube-apiserver.crt \\
   --tls-private-key-file=/var/lib/kubernetes/kube-apiserver.key \\
+  --requestheader-allowed-names=front-proxy-client \\
+  --requestheader-client-ca-file=/var/lib/kubernetes/front-proxy-ca.crt \\
+  --requestheader-extra-headers-prefix=X-Remote-Extra- \\
+  --requestheader-group-headers=X-Remote-Group \\
+  --requestheader-username-headers=X-Remote-User \\
   --v=2
 Restart=on-failure
 RestartSec=5
