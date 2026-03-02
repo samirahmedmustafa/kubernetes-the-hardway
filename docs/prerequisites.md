@@ -36,6 +36,15 @@
     <tr><td>DNS</td><td>53/udp</td></tr>
 </table
 
+   In case the CNI plugin is calico you need the below ports to be allowed
+ <table>
+    <tr><th>Service</th><th>PORT</th></tr>
+    <tr><td>VXLAN</td><td>179/tcp</td></tr>
+    <tr><td>DNS</td><td>4789/udp</td></tr>
+    <tr><td>DNS</td><td>5473/tcp</td></tr>
+    <tr><td>DNS</td><td>51820/udp</td></tr>      
+</table
+
 - Install pkgs
 
 ```
